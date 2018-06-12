@@ -1,0 +1,14 @@
+{
+  "database": {
+    "name": "<database name>",
+    "tables": [
+      {
+        "name": "table_name",
+        "fields": [
+          {"name": "field_name", "type": "field_type_in_sql"},
+          {"name": "field_name", "type": "field_type_in_sql"}
+        ]
+      }
+    ]
+  }
+}

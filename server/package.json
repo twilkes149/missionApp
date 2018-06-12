@@ -1,0 +1,21 @@
+{
+  "name": "base-server",
+  "version": "1.0.0",
+  "description": "This is a base server, will read from a json file to determine tables in databases. Anything that extends this will already have routes for login, registration, and get user",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd src && node index.js"
+  },
+  "author": "Tucker Wilkes",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^6.2.1",
+    "bcrypt": "^2.0.1",
+    "dotenv-safe": "^5.0.1",
+    "express": "^4.16.3",
+    "jsonfile": "^4.0.0",
+    "jsonwebtoken": "^8.2.1",
+    "promise-mysql": "^3.2.1"
+  }
+}
