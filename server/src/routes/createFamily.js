@@ -16,9 +16,11 @@ router.post('/createFamily', async (req, res, next) => {
   }  
 
   try {
+    //create the family
     let query = `INSERT INTO families (name) VALUES ("${familyName}")`;
     await conn.query(query);
 
+    //grab the auto generated family id
     query = `SELECT MAX(\`key\`) as \'key\' FROM families WHERE name = "${familyName}"`;
     let result = await conn.query(query);
     

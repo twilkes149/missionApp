@@ -12,6 +12,7 @@ var forgotPasswordRoute = require('./routes/forgotPassword');
 var resetPasswordRoute = require('./routes/resetPassword');
 var createFamilyRoute = require('./routes/createFamily');
 var joinFamilyRoute = require('./routes/joinFamily');
+var familyRoute = require('./routes/family');
 
 //middleware
 var authenticate = require('./middleware/authenticate');
@@ -34,6 +35,7 @@ server.post('/resetPassword', resetPasswordRoute);
 server.use(authenticate);
 server.post('/createFamily', createFamilyRoute);
 server.post('/joinFamily', joinFamilyRoute);
+server.get('/family', familyRoute);
 
 //********************************** ERROR HANDLING ****************************
 server.use((error, req, res, next) => {  

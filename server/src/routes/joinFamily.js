@@ -33,6 +33,7 @@ router.post('/joinFamily', async (req, res, next) => {
     res.status(200).send({success: true, message: 'Joined family'});
   }
   catch (error) {
+    console.log(error);
     error = new Error('SQL error');
     error.status = 500;
     error.body = {success: false, message: "SQL Error"};
