@@ -4,12 +4,15 @@ if (!process.env.PRODUCTION) {
   console.log("localhost");
 }
 
+//routes
 var loginRoute = require('./routes/login');
 var registerRoute = require('./routes/register');
 var confirmEmailRoute = require('./routes/confirmEmail');
 var forgotPasswordRoute = require('./routes/forgotPassword');
 var resetPasswordRoute = require('./routes/resetPassword');
+var createFamilyRoute = require('./routes/createFamily');
 
+//middleware
 var authenticate = require('./middleware/authenticate');
 var dbConnection = require('./middleware/database');
 
@@ -24,6 +27,7 @@ server.post('/forgotPassword', forgotPasswordRoute);
 server.post('/resetPassword', resetPasswordRoute);
 
 server.use(authenticate);//authenticate client for any other route
+server.post('/createFamily', createFamilyRoute);
 
 //handle errors
 server.use((error, req, res, next) => {  

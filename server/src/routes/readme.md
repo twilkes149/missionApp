@@ -140,7 +140,7 @@ Response:
 }
 ```
 
-## family
+## /family
 Method: GET
 Param: authToken
 Response (a list of all of the users families):

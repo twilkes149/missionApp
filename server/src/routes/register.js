@@ -42,7 +42,7 @@ router.post('/register', async (req, res, next) => {
     let query = `INSERT INTO users (password, firstname, lastname, email) VALUES ("${password}", "${firstname}", "${lastname}", "${email}")`;
     await conn.query(query);
     
-    let token = jwt.generateToken();
+    let token = jwt.generateToken(email);
     await sendEmail(email, conn);//send confirmation email
     res.status(200).send({success: true, message: 'Successfuly registered', token: token});//generate auth token and return to client
   }

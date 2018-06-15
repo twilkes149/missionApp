@@ -2,7 +2,7 @@ const sql = require('promise-mysql');
 
 async function routeConnection(req, res, next) {
   let conn = await createConnection(process.env.DB_HOST,
-    process.env.DB_USERNAME, process.env.DB_PASSWORD, process.env.DB_DATABASE);
+    process.env.DB_USERNAME, '', process.env.DB_DATABASE);
   if (conn == null) {
     let error = new Error({success: false, message: "DB Connection error"})
     error.status = 500;

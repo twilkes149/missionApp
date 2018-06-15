@@ -41,7 +41,7 @@ router.post('/login', async (req, res, next) => {
       return next(error);
     }
 
-    let token = jwt.generateToken();
+    let token = jwt.generateToken(email);
     res.status(200).send({success: true, message: 'Successfully logged in', token: token});
   }
   catch (error) {    
