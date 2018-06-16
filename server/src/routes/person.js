@@ -1,5 +1,4 @@
 var Database = require('../middleware/database');
-var Events = require('./events');
 
 //function to retrieve a person by id, or a list of persons by familyKey
 async function getPerson(req, res, next) {

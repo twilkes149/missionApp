@@ -15,7 +15,9 @@ var createFamilyRoute = require('./routes/createFamily');
 var joinFamilyRoute = require('./routes/joinFamily');
 var familyRoute = require('./routes/family');
 //person routes
-var personRoute = require('./routes/person');
+var personRoutes = require('./routes/person');
+//event routes
+var eventRoutes = require('./routes/events');
 
 
 //middleware
@@ -43,7 +45,11 @@ server.post('/joinFamily', joinFamilyRoute);
 server.get('/family', familyRoute);
 
 //person routes
-server.post('/person', personRoute.postPerson);
+server.post('/person', personRoutes.postPerson);
+
+//event routes
+server.post('/event', eventRoutes.postEvent);
+server.get('/event', eventRoutes.getEvent);
 
 //********************************** ERROR HANDLING ****************************
 server.use((error, req, res, next) => {  
