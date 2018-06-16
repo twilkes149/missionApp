@@ -155,7 +155,7 @@ Response (a list of all of the users families):
 
 ## /person
 Method: GET
-Param: authToken, familyKey
+Param: authToken, familyKey or personId
 Response (list of all persons)
 ```
 [
@@ -181,10 +181,11 @@ Request:
   firstName: 'name',
   lastName: 'name',
   gender: 'm/f',
-  description: 'the description',
+  description (optional): 'the description',
   parentId (optional): ['id of parent', 'id of parent'],
   familyKey: 'the key of family this perosn belongs to',
 
+  //not required
   startEvent: { //every person will have a psuedo event (title: '_START') that describes their mission home (this is where the pin on the map will be located)
     lat: 'lat of mission home',
     lng: 'lng of mission home',

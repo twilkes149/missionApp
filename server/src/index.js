@@ -10,9 +10,13 @@ var registerRoute = require('./routes/register');
 var confirmEmailRoute = require('./routes/confirmEmail');
 var forgotPasswordRoute = require('./routes/forgotPassword');
 var resetPasswordRoute = require('./routes/resetPassword');
+//family routes
 var createFamilyRoute = require('./routes/createFamily');
 var joinFamilyRoute = require('./routes/joinFamily');
 var familyRoute = require('./routes/family');
+//person routes
+var personRoute = require('./routes/person');
+
 
 //middleware
 var authenticate = require('./middleware/authenticate');
@@ -33,9 +37,13 @@ server.post('/resetPassword', resetPasswordRoute);
 
 //*************************** AUTHROIZED ROUTES ******************************
 server.use(authenticate);
+//family routes
 server.post('/createFamily', createFamilyRoute);
 server.post('/joinFamily', joinFamilyRoute);
 server.get('/family', familyRoute);
+
+//person routes
+server.post('/person', personRoute.postPerson);
 
 //********************************** ERROR HANDLING ****************************
 server.use((error, req, res, next) => {  
