@@ -46,6 +46,7 @@ server.get('/family', familyRoute);
 
 //person routes
 server.post('/person', personRoutes.postPerson);
+server.get('/person', personRoutes.getPerson);
 
 //event routes
 server.post('/event', eventRoutes.postEvent);

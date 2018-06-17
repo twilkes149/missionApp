@@ -3,8 +3,10 @@ var Database = require('../middleware/database');
 //function to get a list of events for a specific person
 async function selectPersonEvents(personId, conn) {
   try {
-    personId = personId.replace(/^'|'$/g, '');
-    personId = parseInt(personId);  
+    if (typeof personId == 'string') {
+      personId = personId.replace(/^'|'$/g, '');
+      personId = parseInt(personId);  
+    }
     let query = `SELECT * FROM events WHERE personId = "${personId}"`;
     let result = await conn.query(query);
 
@@ -117,4 +119,5 @@ async function postEvent(req, res, next) {
 module.exports = {
   postEvent,
   getEvent,
+  selectPersonEvents,
 }

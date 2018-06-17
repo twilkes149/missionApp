@@ -45,12 +45,12 @@ Fields:
 - created at (used to verify that token has been recently created)
 
 ## Families
-- ID
+- key
 - name
 
 ## FamilyUser
 - email
-- familyId
+- familyKey
 
 ## Person
 - ID
@@ -59,7 +59,7 @@ Fields:
 - gender
 - parentId
 - description
-- familyId
+- familyKey
 
 ## Event
 - ID
@@ -68,5 +68,5 @@ Fields:
 - lat
 - lng
 - personId
-- familyId
+- familyKey
 
