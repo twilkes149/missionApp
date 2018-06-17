@@ -1,6 +1,94 @@
 var Database = require('../middleware/database');
 var Events = require('./events');
 
+async function deletePerson(req, res, next) {
+  let conn = res.locals.conn;
+  let person = req.body.person;
+  console.log("delete person");
+
+  if (!person || !person.id) {
+    let error = new Error('Not all required fields were provided');
+    error.status = 400;
+    error.body = {success: false, message: "Not all required fields were provided"};
+    return next(error);
+  }
+
+  try {
+    let query = `DELETE FROM person WHERE id = "${person.id}"`;
+    await conn.query(query);
+    res.status(200).send({success: true, message: 'Deleted person'});
+  }
+  catch (error) {
+    console.log(error);
+    error = new Error('SQL error');
+    error.status = 500;
+    error.body = {success: false, message: "SQL Error"};
+    return next(error);
+  }
+  conn.end();
+}
+
+async function putPerson(req, res, next) {
+  let conn = res.locals.conn;
+  let person = req.body.person;
+  console.log("put person");
+
+  if (!person || !person.id) {
+    let error = new Error('Not all required fields were provided');
+    error.status = 400;
+    error.body = {success: false, message: "Not all required fields were provided"};
+    return next(error);
+  }
+
+  //firstName, lastName, gender, description, parents
+  let fR = null, lR = null, gR = null, dR = null;
+  try {
+    let q = `BEGIN`;
+    await conn.query(q);
+
+    if (person.firstName) {
+      let query = `UPDATE person SET firstName = "${person.firstName}" WHERE id = "${person.id}"`;
+      fR = conn.query(query);
+    }
+    if (person.lastName) {
+      let query = `UPDATE person SET lastName = "${person.lastName}" WHERE id = "${person.id}"`;
+      lR = conn.query(query);
+    }
+    if (person.gender) {
+      let query = `UPDATE person SET gender = "${person.gender}" WHERE id = "${person.id}"`;
+      gR = conn.query(query);
+    }
+    if (person.description) {
+      let query = `UPDATE person SET description = "${person.description}" WHERE id = "${person.id}"`;
+      dR = conn.query(query);
+    }
+    await Promise.all([fR,lR,gR,dR]);
+
+    if (person.parents) {
+      let query = `DELETE FROM parents WHERE personId = "${person.id}"`;//delete current parents
+      await conn.query(query);
+
+      person.parents.forEach(async (parentId) => {//insert new parents into db
+        let query = `INSERT INTO parents (personId, parentId) VALUES ("${person.id}", "${parentId}")`;
+        await conn.query(query);
+      }); 
+    }
+    q = `COMMIT`;
+    await conn.query(q);
+    res.status(200).send({success: true, message: 'Udated person'});
+  }
+  catch (error) {
+    console.log(error);
+    let query = `ROLLBACK`;
+    await conn.query(query);
+    error = new Error('SQL error');
+    error.status = 500;
+    error.body = {success: false, message: "SQL Error"};
+    return next(error);
+  }
+  conn.end();
+}
+
 //helper function to select a person from the database
 async function selectPerson(id, conn) {
   try {
@@ -64,8 +152,7 @@ async function selectFamilyKeyPerson(familyKey, conn) {
 async function getPerson(req, res, next) {
   console.log("get person");
 
-  let conn = res.locals.conn;
-  let email = res.locals.email;
+  let conn = res.locals.conn;  
 
   let id = (req.query.id) ? Database.sanitize(req.query.id, conn) : null;
   let familyKey = (req.query.familyKey) ? Database.sanitize(req.query.familyKey, conn) : null;
@@ -137,8 +224,7 @@ async function insertPerson(person, conn) {
 async function postPerson(req, res, next) {
   console.log("post person");
 
-  let conn = res.locals.conn;
-  let email = res.locals.email;
+  let conn = res.locals.conn;  
 
   try {
     //make sure appropiate fields are present
@@ -180,4 +266,6 @@ async function postPerson(req, res, next) {
 module.exports = {
   getPerson,
   postPerson,
+  putPerson,
+  deletePerson,
 }

@@ -6,7 +6,7 @@ async function deleteEvent(req, res, next) {
   let conn = res.locals.conn;  
   let event = req.body.event;
 
-  if (!event.id) {
+  if (!event || !event.id) {
     let error = new Error('Not all required fields were provided');
     error.status = 400;
     error.body = {success: false, message: "Not all required fields were provided"};
@@ -35,7 +35,7 @@ async function putEvent(req, res, next) {
   let conn = res.locals.conn;  
   let event = req.body.event;
 
-  if (!event.id) {
+  if (!event || !event.id) {
     let error = new Error('Not all required fields were provided');
     error.status = 400;
     error.body = {success: false, message: "Not all required fields were provided"};
