@@ -1,5 +1,85 @@
 var Database = require('../middleware/database');
 
+async function deleteEvent(req, res, next) {
+  console.log("delete event");
+
+  let conn = res.locals.conn;  
+  let event = req.body.event;
+
+  if (!event.id) {
+    let error = new Error('Not all required fields were provided');
+    error.status = 400;
+    error.body = {success: false, message: "Not all required fields were provided"};
+    return next(error);
+  }
+
+  try {
+    let query = `DELETE FROM events WHERE id = "${event.id}"`;
+    await conn.query(query);
+    res.status(200).send({success: true, message: 'Deleted event'});
+  }
+  catch (error) {
+    console.log(error);
+    error = new Error('SQL error');
+    error.status = 500;
+    error.body = {success: false, message: "SQL Error"};
+    return next(error);
+  }
+  conn.end();
+}
+
+//function to update an event
+async function putEvent(req, res, next) {
+  console.log("put event");
+
+  let conn = res.locals.conn;  
+  let event = req.body.event;
+
+  if (!event.id) {
+    let error = new Error('Not all required fields were provided');
+    error.status = 400;
+    error.body = {success: false, message: "Not all required fields were provided"};
+    return next(error);
+  }
+
+  try {
+    //title, desccription, lat, lng, address
+    let tR = null, dR = null, lR = null, lnR = null, aR = null;
+    if (event.title) {
+      let query = `UPDATE events SET title = "${event.title}" WHERE id = "${event.id}"`;
+      tR = conn.query(query);
+    }
+    if (event.description) {
+      let query = `UPDATE events SET description = "${event.description}" WHERE id = "${event.id}"`;
+      dR = conn.query(query);
+    }
+    if (event.lat) {
+      let query = `UPDATE events SET lat = "${event.lat}" WHERE id = "${event.id}"`;
+      lR = conn.query(query);
+    }
+    if (event.lng) {
+      let query = `UPDATE events SET lng = "${event.lng}" WHERE id = "${event.id}"`;
+      lnR = conn.query(query);
+    }
+    if (event.address) {
+      let query = `UPDATE events SET aR = "${event.address}" WHERE id = "${event.id}"`;
+      aR = conn.query(query);
+    }  
+
+    await Promise.all([tR,dR,lR,lnR,aR]);
+
+    res.status(200).send({success: true, message: 'Updated event'});
+  }
+  catch (error) {
+    console.log(error);
+    error = new Error('SQL error');
+    error.status = 500;
+    error.body = {success: false, message: "SQL Error"};
+    return next(error);
+  }
+  conn.end();
+}
+
 //function to get a list of events for a specific person
 async function selectPersonEvents(personId, conn) {
   try {
@@ -119,5 +199,7 @@ async function postEvent(req, res, next) {
 module.exports = {
   postEvent,
   getEvent,
-  selectPersonEvents,
+  selectPersonEvents,//used in person
+  putEvent,
+  deleteEvent,
 }

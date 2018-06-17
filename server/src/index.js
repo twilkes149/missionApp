@@ -51,6 +51,8 @@ server.get('/person', personRoutes.getPerson);
 //event routes
 server.post('/event', eventRoutes.postEvent);
 server.get('/event', eventRoutes.getEvent);
+server.put('/event', eventRoutes.putEvent);
+server.delete('/event', eventRoutes.deleteEvent);
 
 //********************************** ERROR HANDLING ****************************
 server.use((error, req, res, next) => {  

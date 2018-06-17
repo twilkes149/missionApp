@@ -76,8 +76,7 @@ async function getPerson(req, res, next) {
       person = await selectPerson(id, conn);
     }
     else if (familyKey) {//return list of family members based on id
-      person = await selectFamilyKeyPerson(familyKey, conn);
-      console.log(person);
+      person = await selectFamilyKeyPerson(familyKey, conn);      
     }
     else {
       let error = new Error('Not all required fields were provided');
@@ -175,6 +174,7 @@ async function postPerson(req, res, next) {
     error.body = {success: false, message: "SQL Error"};
     return next(error);
   }
+  conn.end();
 }
 
 module.exports = {
