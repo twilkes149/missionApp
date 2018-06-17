@@ -1,0 +1,44 @@
+<ion-header>  
+</ion-header>
+
+<ion-content padding class='backgroundColor'>  
+  <div class="spacer" style="width: 300px; height: 40px;"></div>
+    <!--
+    <div>      
+      <img src="assets/imgs/IdeaTek_logo.png" style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
+    </div>-->
+    
+    <div class="spacer" style="width: 300px; height: 30px;"></div>
+    
+    <div id="login-markdown13" class="show-list-numbers-and-dots" *ngIf="error">
+      <p style="color:#F81212;" [innerHtml]="error"></p>
+    </div>    
+    <ion-list id="login-list1" class="borderRadius">      
+      <ion-item class="borderRadius item item-input">
+        <ion-label fixed>Email</ion-label>
+        <ion-input type="email" value="" [(ngModel)]="email"></ion-input>
+      </ion-item>
+
+      <ion-item class="borderRadius item item-input" margin-top>
+        <ion-label fixed>Password</ion-label>
+        <ion-input type="password" value="" [(ngModel)]="password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div class="center">
+      <button class="backgroundColor" (click)="goToForgotPassword()">
+        <p class="textButton">Forget password?</p>
+      </button>
+    </div>
+    
+    <div class="spacer" style="width: 300px; height: 15px;"></div>
+    
+    <button ion-button full id="loginPage-loginButton" class="borderRadius" (click)="login()">Log in</button>
+    <div class="spacer" style="width: 300px; height: 20px;"></div>
+
+    <div class="center">
+      <button class="backgroundColor" (click)="goToRegister()">
+        <p class="textButton">Or create an account</p>
+      </button>
+    </div>
+</ion-content>

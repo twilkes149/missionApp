@@ -1,0 +1,55 @@
+<ion-header>
+</ion-header>
+
+<ion-content padding class="backgroundColor">
+
+  <div class="spacer" style="width: 300px; height: 50px;"></div>
+  
+  <!-- <div>   
+    <img src="assets/imgs/IdeaTek_logo.png" style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
+  </div> -->  
+
+  <ion-list class="borderRadius">
+    <!-- Create a paragraph to display errors -->
+    <p id="ErrorWindow" class="errorMessage" *ngIf="error" [innerHtml]="error">      
+      <br>
+    </p>
+
+    <ion-item class="borderRadius listItem">
+      <ion-label fixed>First Name</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="firstName"></ion-input>
+    </ion-item>
+
+    <ion-item class="borderRadius listItem">
+      <ion-label fixed>Last Name</ion-label>
+      <ion-input type="text" value="" [(ngModel)]="lastName"></ion-input>
+    </ion-item>
+
+    <ion-item class="borderRadius listItem">
+      <ion-label fixed>Email</ion-label>
+      <ion-input type="email" value="" [(ngModel)]="email"></ion-input>
+    </ion-item>
+
+    <ion-item class="borderRadius listItem">
+      <ion-label fixed>Password</ion-label>
+      <ion-input type="password" value="" [(ngModel)]="password"></ion-input>
+    </ion-item>
+
+    <ion-item class="borderRadius listItem">
+      <ion-label fixed>Confirm Password</ion-label>
+      <ion-input type="password" value="" [(ngModel)]="confirmPassword"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button (click)="register()" class="borderRadius">Create Account</button>
+
+  <div class="spacer" style="width: 300px; height: 20px;"></div>
+
+  <div class="borderRadius row" style="background-color: #FFFFFF" [ngStyle]="{'padding': '10px'}">
+    <div class="show-list-numbers-and-dots col">
+      <p style="margin-top:0px;color:#000000;">Already have an account?</p>      
+    </div>
+    <button ion-button class="col" (click)="goToLogin()">Login</button>
+  </div>
+  <div class="spacer" style="width: 300px; height: 44px;"></div>
+</ion-content>
