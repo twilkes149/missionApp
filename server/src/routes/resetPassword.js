@@ -30,12 +30,19 @@ router.post('/resetPassword', async (req, res, next) => {
     let query = `SELECT email, createdat FROM forgotpassword WHERE value = "${token}"`;
     let result = await conn.query(query);
 
+    if (!result || !result[0]) {
+      let error = new Error("Invalid token");
+      error.status = 403;
+      error.body = {success: false, message: 'Invalid token'};
+      return next(error);
+    }
+
     let email = result[0].email;
     let createdAt = result[0].createdat;
     let elapsed = Date.now() - new Date(createdAt);
     elapsed = (elapsed / 1000) / 60; //convert elapsed time to minutes
 
-    query = `DELETE FROM forgotpassword WHERE value = ${token}`;//delete the token from the db (it's only a 1 time use)
+    query = `DELETE FROM forgotpassword WHERE value = "${token}"`;//delete the token from the db (it's only a 1 time use)
     await conn.query(query);
     
     if (elapsed > 60) {//only allow token to be valid for 1 hour
