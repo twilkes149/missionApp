@@ -71,7 +71,7 @@ export class ForgotPasswordPage {
       .catch((error) => {
         const message = this.alert.create({
           title: 'Error',
-          subTitle: error.message,
+          subTitle: JSON.parse(error.error).message,
           buttons: ['OK']
         });
         message.present();
@@ -85,7 +85,7 @@ export class ForgotPasswordPage {
   resetPassword() {
     this.error = this.verifyToken(this.token);
 
-    if (!this.error) {
+    if (!this.error && !this.verifyPassword(this.password, this.confirmPassword)) {
       //show loading indicator
       const loader = this.loading.create({
         content: "Loading...",
@@ -98,14 +98,19 @@ export class ForgotPasswordPage {
         const message = this.alert.create({
           title: 'Success',
           subTitle: 'Your password was reset',
-          buttons: ['OK']
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              this.navCtrl.pop();
+            }
+          }]
         });
         message.present();
       })
       .catch((error) => {
         const message = this.alert.create({
           title: 'Error',
-          subTitle: error.message,
+          subTitle: JSON.parse(error.error).message,
           buttons: ['OK']
         });
         message.present();
@@ -115,7 +120,8 @@ export class ForgotPasswordPage {
       });
     }
     else if (this.verifyPassword(this.password, this.confirmPassword)) {//if there is a password error
-      this.error += this.verifyPassword(this.password, this.confirmPassword); //display error message
+      let message = this.verifyPassword(this.password, this.confirmPassword); //display error message
+      this.error = this.error ? this.error + ' ' + message : message;
     }
   }
 }
