@@ -3,7 +3,7 @@ import { NavController, LoadingController, AlertController } from 'ionic-angular
 
 //pages
 import { LoginPage } from '../login/login';
-import { DummyPage } from '../dummy/dummy';
+import { GoogleMapPage } from '../googleMap/googleMap';
 
 //providers
 import { ApiProvider } from '../../providers/api/api';
@@ -66,7 +66,7 @@ export class RegisterPage {
         console.log("API register result: ", result)
 
         //navigate to appropiate page here
-        this.navCtrl.push(DummyPage);
+        this.navCtrl.push(GoogleMapPage);
       })
       .catch((error) => {
         const message = this.alert.create({

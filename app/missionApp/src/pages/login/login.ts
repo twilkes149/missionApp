@@ -4,7 +4,7 @@ import { NavController, AlertController, LoadingController } from 'ionic-angular
 //pages
 import { RegisterPage } from '../register/register';
 import { ForgotPasswordPage } from '../forgotPassword/forgotPassword';
-import { DummyPage } from '../dummy/dummy';
+import { GoogleMapPage } from '../googleMap/googleMap';
 
 //providers
 import { ApiProvider } from '../../providers/api/api'; 
@@ -63,7 +63,7 @@ export class LoginPage {
         console.log("api call result", result);
         
         //navigate to the appropiate page here
-        this.navCtrl.push(DummyPage);
+        this.navCtrl.push(GoogleMapPage);
       })
       .catch ((error) => {
         const message = this.alert.create({

@@ -9,11 +9,12 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { ForgotPasswordPage } from '../pages/forgotPassword/forgotPassword';
-import { DummyPage } from '../pages/dummy/dummy';
+import { GoogleMapPage } from '../pages/googleMap/googleMap';
 
 //providers
 import { HTTP } from '@ionic-native/http';
 import { ApiProvider } from '../providers/api/api';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { ApiProvider } from '../providers/api/api';
     LoginPage,
     RegisterPage,
     ForgotPasswordPage,
-    DummyPage,
+    GoogleMapPage,
   ],
   imports: [
     BrowserModule,
@@ -33,13 +34,14 @@ import { ApiProvider } from '../providers/api/api';
     LoginPage,
     RegisterPage,
     ForgotPasswordPage,
-    DummyPage,
+    GoogleMapPage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     HTTP,
     ApiProvider,
+    GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
