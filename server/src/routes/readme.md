@@ -147,7 +147,7 @@ Response (a list of all of the users families):
 ```
 [
   {
-    familyName: 'name of family',
+    name: 'name of family',
     familyKey: 'the id of the family'
   },
 ]
