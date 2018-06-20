@@ -4,6 +4,7 @@ var Database = require('../middleware/database');
 var Password = require('../common/password');
 var jwt = require('../common/authToken');
 var mailSender = require('@sendgrid/mail');
+var Key = require('../common/familyKey');
 /*
 * Response codes:
 * 400 - client didn't supply all fields
@@ -43,8 +44,9 @@ router.post('/register', async (req, res, next) => {
     await conn.query(query);
     
     let token = jwt.generateToken(email);
+    let familyKeys = await Key.getFamilyKeys(email, conn);
     await sendEmail(email, conn);//send confirmation email
-    res.status(200).send({success: true, message: 'Successfuly registered', token: token});//generate auth token and return to client
+    res.status(200).send({success: true, message: 'Successfuly registered', token: token, familyKeys: familyKeys});//generate auth token and return to client
   }
   catch (error) {
     console.log('error:', error);

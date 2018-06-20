@@ -3,6 +3,7 @@ var router = express.Router();
 var Password = require('../common/password');
 var Database = require('../middleware/database');
 var jwt = require('../common/authToken');
+var Key = require('../common/familyKey');
 
 router.post('/login', async (req, res, next) => {
   console.log("login");
@@ -42,9 +43,11 @@ router.post('/login', async (req, res, next) => {
     }
 
     let token = jwt.generateToken(email);
-    res.status(200).send({success: true, message: 'Successfully logged in', token: token});
+    let familyKeys = await Key.getFamilyKeys(email, conn);
+    res.status(200).send({success: true, message: 'Successfully logged in', token: token, familyKeys: familyKeys});
   }
   catch (error) {    
+    console.log(error);
     error.status = 500;
     error.body = {success: false, message: "SQL error"};
     return next(error);
