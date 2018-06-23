@@ -11,7 +11,7 @@ import {Storage} from '@ionic/storage';
 @Injectable()
 export class ApiProvider {
   //private baseUrl = 'https://twilkes-base-server.herokuapp.com/';
-  private baseUrl = 'http://192.168.1.2:8080/';
+  private baseUrl = 'http://192.168.1.6:8080/';
   private authToken;  
   private familyKeys;
   private persons;

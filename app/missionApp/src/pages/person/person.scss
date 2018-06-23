@@ -1,3 +1,35 @@
 page-person {
   
+  #man {
+    font-size: 50px;
+    color: blue;
+    margin-right: 15px;
+  }
+
+  #woman {
+    font-size: 50px;
+    color: green;
+    margin-right: 15px;
+  }
+
+  #addEvent {
+    font-size: 8px;
+
+  }
+
+  p {
+    font-size: 20px;
+    color: white;
+  }
+
+  h3 {
+    color: white;
+    margin-bottom: 2px;
+  }
+
+  .event-list-item {
+    border-radius: 5px;
+    box-shadow: 3px 2px;
+    margin-bottom: 5px;    
+  }
 }

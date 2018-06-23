@@ -13,11 +13,46 @@
   </ion-toolbar>  
 </ion-header>
 
-<ion-content padding class="backgroundColor">
-  
-  <div style="min-height: 40%">
-    <ion-icon name='man' *ngIf="person.gender == 'm'" left></ion-icon>
-    <ion-icon name='woman' *ngIf="person.gender == 'w'" left></ion-icon>
-    <p right>{{person.description}}</p>
+<ion-content padding class="backgroundColor">  
+  <!-- Person info -->
+  <div style="height: 40%">
+    <table>
+      <tr>
+        <td ion-col left style="margin-right: 15px; width: 20%;">
+        <ion-icon id='man' name='man' *ngIf="person.gender == 'm'" left></ion-icon>
+        <ion-icon id='woman' name='woman' *ngIf="person.gender == 'w'" left></ion-icon>      
+        </td>
+
+        <td ion-col style="width: 80%;">
+          <p right *ngIf="person.events[0].address">{{person.events[0].address}}</p>
+          <p right>{{person.description}}</p>
+        </td>
+      </tr>
+    </table>
   </div>
+
+  <div class="spacer" style="width: 100%; height: 5%"></div>
+
+  <!-- Event list -->
+  <div style="height: 55%">
+    <div ion-row style="width: 100%">
+      <h3 style="margin-bottom: 2px;" ion-col left>Events</h3>
+      
+      <button ion-button right style="height: 20px; width: 20px;">
+        <ion-icon center name="add"></ion-icon>
+      </button>
+    </div>
+    <hr style="height: 2px; color: #000000; width: 100%;">
+    
+    <ion-list> <!-- Display all of the person's events -->
+      <button ion-item *ngFor="let event of person.events | slice:1" (click)="gotToEvent(event)" class="event-list-item">
+        <div *ngIf="event.title != '_START'">
+          {{ event.title }}
+          <br />
+          {{ event.description }}
+        </div>
+      </button>  
+    </ion-list>
+  </div>
+
 </ion-content>

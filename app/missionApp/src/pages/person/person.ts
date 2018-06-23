@@ -34,4 +34,8 @@ export class PersonPage {
   goBack() {
     this.navCtrl.pop();
   }
+
+  gotToEvent(event) {
+    console.log(event);
+  }
 }
