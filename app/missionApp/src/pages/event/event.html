@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar class="header" color="header">
+    <button ion-button menuToggle left (click)="goBack()">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </button>
+
+    <ion-title center>{{name}}</ion-title>
+
+    <button ion-button menuToggle right *ngIf="event" (click)="deleteEvent()">
+      <ion-icon name="trash"></ion-icon>
+    </button>
+
+  </ion-toolbar>  
+</ion-header>
+
+<ion-content padding class="backgroundColor">
+  <!-- View/edit Event -->
+  <div *ngIf="event" center style="height: 50%; margin-top: 5%; margin-top: 5%;">
+    <ion-textarea [(ngModel)]="description" (input)="checkInput()" ion-row>      
+    </ion-textarea>
+
+    <button ion-button ion-row *ngIf="showSubmit" style="margin: auto; margin-top: 8px;">Submit Changes</button>
+  </div>
+
+  <!-- Create Event -->
+  <div *ngIf="!event" style="height: 50%; margin-top: 5%; margin-top: 5%;">
+    <ion-item ion-row>
+      <ion-label color="#000000" stacked>Event Title</ion-label>
+      <ion-input type="text" placeholder="Title" [(ngModel)]="title"></ion-input>
+    </ion-item>
+
+    <div class="spacer" style="width: 100%; height: 5px"></div>
+
+    <ion-textarea placeholder="Event Description" ion-row [(ngModel)]="description" placeholder="Event's description">
+    </ion-textarea>
+
+    <button ion-button ion-row style="margin: auto; margin-top: 8px;">Create Event</button>
+  </div>
+
+</ion-content>

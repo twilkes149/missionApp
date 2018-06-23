@@ -1,21 +1,20 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
 
-//providers
-import { ApiProvider } from '../../providers/api/api'; 
+//pages
+import { EventPage } from '../event/event';
+import { EditPersonPage } from '../editPerson/editPerson';
 
 @Component({
   selector: 'page-person',
   templateUrl: 'person.html',
-  providers: [ApiProvider]
 })
 export class PersonPage {
   public person:any;
   public name:string;
   public gender:string;
 
-  constructor(public navCtrl: NavController, 
-    private api: ApiProvider,
+  constructor(public navCtrl: NavController,     
     public params: NavParams,
     public alert: AlertController) {    
 
@@ -28,7 +27,7 @@ export class PersonPage {
   }
 
   goToEditPersonPage() {
-
+    this.navCtrl.push(EditPersonPage, {person: this.person});
   }
 
   goBack() {
@@ -36,6 +35,11 @@ export class PersonPage {
   }
 
   gotToEvent(event) {
-    console.log(event);
+    this.navCtrl.push(EventPage, {event: event});//go to the event page
+  }
+
+  createEvent() {
+    console.log('create event');
+    this.navCtrl.push(EventPage, {person: this.person});
   }
 }

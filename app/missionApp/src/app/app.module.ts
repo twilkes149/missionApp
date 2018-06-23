@@ -12,6 +12,8 @@ import { RegisterPage } from '../pages/register/register';
 import { ForgotPasswordPage } from '../pages/forgotPassword/forgotPassword';
 import { GoogleMapPage } from '../pages/googleMap/googleMap';
 import { PersonPage } from '../pages/person/person';
+import { EventPage } from '../pages/event/event';
+import { EditPersonPage } from '../pages/editPerson/editPerson';
 
 //providers
 import { HTTP } from '@ionic-native/http';
@@ -26,6 +28,8 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     ForgotPasswordPage,
     GoogleMapPage,
     PersonPage,
+    EventPage,
+    EditPersonPage,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +44,8 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     ForgotPasswordPage,
     GoogleMapPage,
     PersonPage,
+    EventPage,
+    EditPersonPage,
   ],
   providers: [
     StatusBar,
