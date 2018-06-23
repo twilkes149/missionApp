@@ -1,8 +1,14 @@
 <ion-header>
+  <ion-toolbar class="header" color="header">
+    <ion-title>Missionary Map</ion-title>
+
+    <button ion-button menuToggle right (click)="goToSettingsPage()">
+      <ion-icon name="settings"></ion-icon>
+    </button>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding class='backgroundColor'>  
-  <h4 class="center">You are logged in</h4>
-  <div id = "mapCanvas">
-  </div>
+<ion-content class='backgroundColor'>    
+  <div id = "mapCanvas" style="height: 100%; width: 100%;">
+  </div>  
 </ion-content>

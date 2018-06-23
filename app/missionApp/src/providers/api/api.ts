@@ -11,32 +11,74 @@ import {Storage} from '@ionic/storage';
 @Injectable()
 export class ApiProvider {
   //private baseUrl = 'https://twilkes-base-server.herokuapp.com/';
-  private baseUrl = 'http://192.168.1.140:8080/';
-  static authToken;  
-  static familyKeys;
+  private baseUrl = 'http://192.168.1.2:8080/';
+  private authToken;  
+  private familyKeys;
+  private persons;
 
-  constructor(public http: HTTP) {
+  constructor(public http: HTTP, private storage: Storage) {
     console.log('Hello ApiProvider Provider');
-    ApiProvider.authToken = null;
-    ApiProvider.familyKeys = null;
+    this.authToken = null;
+    this.familyKeys = null;
+    this.persons = null;
+  }
+
+  async getAuthToken() {
+    if (!this.authToken) {
+      return await this.storage.get('authToken');
+    }
+    else {
+      return this.authToken;
+    }
+  }
+
+  //function to get all of the persons of a specific family
+  async getPersons(familyKey) {
+    this.http.setDataSerializer('json');    
+    if (this.persons) {
+      return Promise.resolve(this.persons);
+    }
+    else {
+      let authToken = await this.getAuthToken();
+      return new Promise((resolve, reject) => {
+        
+        let body = {
+          authToken: '' + authToken,
+          familyKey: '' + familyKey,
+        };
+        this.http.get(this.baseUrl + 'person', body, {})
+        .then((response) => {
+          this.persons = JSON.parse(response.data).person;
+          resolve(this.persons);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.error)      
+            reject(JSON.parse(error.error));
+          else//not sure what happened
+            reject({message: "Unknown error occured"});
+        });
+      });
+    }
   }
 
   //gets a list of all the families this user belongs to
   //object returned has structure: {name: '', familyKey: }
-  getFamilyKeys() {
-    this.http.setDataSerializer('json');    
-    if (ApiProvider.familyKeys) {
-      return Promise.resolve(ApiProvider.familyKeys);
+  async getFamilyKeys() {
+    this.http.setDataSerializer('json'); 
+    let authToken = await this.getAuthToken();   
+    if (this.familyKeys) {
+      return Promise.resolve(this.familyKeys);
     }
     else {
       return new Promise((resolve, reject) => {
         let body = {
-          authToken: ''+ApiProvider.authToken,
+          authToken: ''+authToken,
         };
         this.http.get(this.baseUrl + 'family', body, {})
         .then((response) => {
-          ApiProvider.familyKeys = JSON.parse(response.data);
-          resolve(ApiProvider.familyKeys);
+          this.familyKeys = JSON.parse(response.data);
+          resolve(this.familyKeys);
         })
         .catch((error) => {
           console.log(error);
@@ -52,8 +94,8 @@ export class ApiProvider {
   //calls api for login and returns promise
   login(email, password) {
     this.http.setDataSerializer('json');
-    if (ApiProvider.authToken) {
-      return Promise.resolve(ApiProvider.authToken);
+    if (this.authToken) {
+      return Promise.resolve(this.authToken);
     }
     else {
       let body = {
@@ -64,8 +106,9 @@ export class ApiProvider {
       return new Promise((resolve, reject) => {
         this.http.post(this.baseUrl + 'login', body, {})
         .then((response) => {          
-          ApiProvider.authToken = JSON.parse(response.data).token;//save the auth token          
-          resolve(ApiProvider.authToken);
+          this.authToken = JSON.parse(response.data).token;//save the auth token   
+          this.storage.set('authToken', `${this.authToken}`);
+          resolve(this.authToken);
         })
         .catch((error) => {//let user know something happened, probalby not caused by my api
           if (error.error)      
@@ -80,8 +123,8 @@ export class ApiProvider {
   //calls api for register and returns a promise
   register(password, email, firstName, lastName) {
     this.http.setDataSerializer('json');
-    if (ApiProvider.authToken) {
-      return Promise.resolve(ApiProvider.authToken);
+    if (this.authToken) {
+      return Promise.resolve(this.authToken);
     }
     else {
       return new Promise((resolve, reject) => {
@@ -94,8 +137,9 @@ export class ApiProvider {
 
         this.http.post(this.baseUrl + 'register', body, {})
         .then((response) => {
-          ApiProvider.authToken = JSON.parse(response.data).token;//save the auth token         
-          resolve(ApiProvider.authToken);
+          this.authToken = JSON.parse(response.data).token;//save the auth token  
+          this.storage.set('authToken', `${this.authToken}`);       
+          resolve(this.authToken);
         })
         .catch((error) => {
           if (error.error)
@@ -151,6 +195,9 @@ export class ApiProvider {
 
   //destroys current user data
   logout() {
-    ApiProvider.authToken = null;
+    this.authToken = null;
+    this.storage.set('authToken', null);
+    this.storage.set('email', null);
+    this.storage.set('password', null);
   }
 }

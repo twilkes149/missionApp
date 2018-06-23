@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar class="header" color="header">
+    <button ion-button menuToggle left (click)="goBack()">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </button>
+
+    <ion-title>{{name}}</ion-title>
+
+    <button ion-button menuToggle right (click)="goToEditPersonPage()">
+      <ion-icon name="create"></ion-icon>
+    </button>
+
+  </ion-toolbar>  
+</ion-header>
+
+<ion-content padding class="backgroundColor">
+  
+  <div style="min-height: 40%">
+    <ion-icon name='man' *ngIf="person.gender == 'm'" left></ion-icon>
+    <ion-icon name='woman' *ngIf="person.gender == 'w'" left></ion-icon>
+    <p right>{{person.description}}</p>
+  </div>
+</ion-content>

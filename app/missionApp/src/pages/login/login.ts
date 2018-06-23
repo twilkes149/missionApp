@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 //pages
 import { RegisterPage } from '../register/register';
@@ -22,7 +23,8 @@ export class LoginPage {
   constructor(public navCtrl: NavController, 
     public api: ApiProvider, 
     public alert: AlertController,
-    public loading: LoadingController) {
+    public loading: LoadingController,
+    private storage: Storage) {
 
   }
 
@@ -45,7 +47,21 @@ export class LoginPage {
     return false;
   }
 
-  login() {
+  async ionViewWillEnter() {
+    //log in using stored email and password
+    let email = await this.storage.get('email');
+    let password = await this.storage.get('password');
+
+    if (email && password && !this.password && !this.email) {
+      this.password = password;
+      this.email = email;
+
+      this.login();
+    }    
+  }
+
+  login() {    
+
     this.error = this.verifyFields(this.email, this.password);
 
     if (!this.error) {
@@ -62,6 +78,9 @@ export class LoginPage {
       .then((result) => {
         console.log("api call result", result);
         
+        this.storage.set('email', this.email);
+        this.storage.set('password', this.password);
+
         //navigate to the appropiate page here
         this.navCtrl.push(GoogleMapPage);
       })
