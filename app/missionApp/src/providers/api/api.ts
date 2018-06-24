@@ -12,6 +12,8 @@ import {Storage} from '@ionic/storage';
 export class ApiProvider {
   //private baseUrl = 'https://twilkes-base-server.herokuapp.com/';
   private baseUrl = 'http://192.168.1.6:8080/';
+  private geocodeURL = 'https://maps.googleapis.com/maps/api/geocode/json';
+  private apiKey = 'AIzaSyD4Fy4u7GOluh_P7fts8v6Cd9_ptlCQ8Os';  
   private authToken;  
   private familyKeys;
   private persons;
@@ -21,6 +23,25 @@ export class ApiProvider {
     this.authToken = null;
     this.familyKeys = null;
     this.persons = null;
+  }
+
+  getLocation(query) {
+    this.http.setDataSerializer('json');
+    return new Promise((resolve, reject) => {
+      let body = {
+        address: query,
+        key: this.apiKey,
+      }
+      this.http.get(this.geocodeURL, body, {})
+      .then((response) => {
+        let result:any = JSON.parse(response.data);
+        resolve(result);
+      })
+      .catch((error) => {
+        console.log('google api error', error);
+        reject({error: 'Error searching'});
+      });      
+    });
   }
 
   async getAuthToken() {
