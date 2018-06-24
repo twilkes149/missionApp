@@ -15,6 +15,7 @@ import { ApiProvider } from '../../providers/api/api';
 
 //pages
 import { PersonPage } from '../person/person';
+import { CreatePersonPage } from '../createPerson/createPerson';
 
 @Component({
   selector: 'page-googleMap',
@@ -126,5 +127,9 @@ export class GoogleMapPage {
 
   goToSettingsPage() {
     console.log('going to settings');
+  }
+
+  goToCreatePersonPage() {
+    this.navCtrl.push(CreatePersonPage);
   }
 }

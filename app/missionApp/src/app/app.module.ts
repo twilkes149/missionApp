@@ -14,6 +14,7 @@ import { GoogleMapPage } from '../pages/googleMap/googleMap';
 import { PersonPage } from '../pages/person/person';
 import { EventPage } from '../pages/event/event';
 import { EditPersonPage } from '../pages/editPerson/editPerson';
+import { CreatePersonPage } from '../pages/createPerson/createPerson';
 
 //providers
 import { HTTP } from '@ionic-native/http';
@@ -30,6 +31,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     PersonPage,
     EventPage,
     EditPersonPage,
+    CreatePersonPage,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +48,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     PersonPage,
     EventPage,
     EditPersonPage,
+    CreatePersonPage,
   ],
   providers: [
     StatusBar,

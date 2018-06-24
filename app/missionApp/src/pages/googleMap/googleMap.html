@@ -2,6 +2,12 @@
   <ion-toolbar class="header" color="header">
     <ion-title>Missionary Map</ion-title>
 
+    <button ion-button menuToggle right (click)="goToCreatePersonPage()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+
+    <div class="spacer" style="width: 10px; height: 100%"></div>
+
     <button ion-button menuToggle right (click)="goToSettingsPage()">
       <ion-icon name="settings"></ion-icon>
     </button>

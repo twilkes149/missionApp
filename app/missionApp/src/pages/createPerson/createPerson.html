@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar class="header" color="header">
+    <button ion-button menuToggle left (click)="goBack()">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </button>
+
+    <ion-title center>Create Person</ion-title>
+
+  </ion-toolbar>  
+</ion-header>
+
+<ion-content padding class="backgroundColor">
+  <!-- Main content -->
+  <div ion-grid>
+    <!-- Name -->
+    <div ion-row>
+      <ion-item ion-col>    
+        <ion-label color="#000000" stacked>First Name</ion-label>
+        <ion-input type="text" [(ngModel)]="person.firstName"></ion-input>      
+      </ion-item>
+            
+      <div class="spacer" style="width: 10px; height: 100%"></div>
+
+      <ion-item ion-col>
+        <ion-label color="#000000" stacked>Last Name</ion-label>
+        <ion-input type="text" [(ngModel)]="person.lastName"></ion-input>      
+      </ion-item>
+    </div>
+
+    <div class="spacer" style="width: 100%; height: 20px"></div>
+
+    <!-- Gender, Description -->
+    <div ion-row>
+      <ion-select ion-col col-auto [(ngModel)]="person.gender" interface="popover">
+        <ion-option value="f">Female<ion-icon name='man' style="color: green;"></ion-icon></ion-option>
+        <ion-option value="m">Male<ion-icon name='man' style="color: blue;"></ion-icon></ion-option>
+      </ion-select>
+
+      <div class="spacer" style="width: 10px; height: 100%"></div>
+      
+      <ion-textarea ion-col type="text" [(ngModel)]="person.description" placeholder="Person's description"></ion-textarea>
+    </div>
+
+    <div class="spacer" style="width: 100%; height: 30px"></div>
+
+    <!-- City search -->
+    <div ion-row>
+      <h3 ion-row style="color: white;">Mission Location</h3>
+      <hr ion-row style="color: white; background-color: white; height: 2px;">     
+      <ion-item ion-col col-6>            
+        <ion-input type="text" [(ngModel)]="searchAddress" placeholder="Mission Location" style="font-size: 14px;"></ion-input>      
+      </ion-item>
+
+      <div class="spacer" style="width: 10px; height: 100%"></div>
+
+      <button *ngIf="!loading" ion-button ion-col (click)="searchCity()" style="margin: auto;">Search</button>
+      <ion-spinner *ngIf="loading" ion-col style="margin: auto;"></ion-spinner>
+    </div>
+  </div>
+
+  <div id="create_map_canvas" style="width: 100%; min-height: 400px; min-width: 100px; margin-top: 20px;">    
+  </div>
+
+  <!-- Submit Button -->
+  <div style="width: 100%">
+    <button ion-button ion-row style="margin: auto; margin-top: 8px;">Create Person</button>
+  </div>
+</ion-content>
