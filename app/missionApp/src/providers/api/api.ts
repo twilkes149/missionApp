@@ -18,13 +18,13 @@ export class ApiProvider {
   private familyKeys;
   private persons;
 
-  constructor(public http: HTTP, private storage: Storage) {
-    console.log('Hello ApiProvider Provider');
+  constructor(public http: HTTP, private storage: Storage) {    
     this.authToken = null;
     this.familyKeys = null;
     this.persons = null;
   }
 
+  //an api for getting the lat, lng from a query string
   getLocation(query) {
     this.http.setDataSerializer('json');
     return new Promise((resolve, reject) => {
@@ -56,10 +56,10 @@ export class ApiProvider {
   //function to get all of the persons of a specific family
   async getPersons(familyKey) {
     this.http.setDataSerializer('json');    
-    if (this.persons) {
-      return Promise.resolve(this.persons);
-    }
-    else {
+    // if (this.persons) {
+    //   return Promise.resolve(this.persons);
+    // }
+    // else {
       let authToken = await this.getAuthToken();
       return new Promise((resolve, reject) => {
         
@@ -80,7 +80,7 @@ export class ApiProvider {
             reject({message: "Unknown error occured"});
         });
       });
-    }
+    //}
   }
 
   //gets a list of all the families this user belongs to
@@ -88,10 +88,10 @@ export class ApiProvider {
   async getFamilyKeys() {
     this.http.setDataSerializer('json'); 
     let authToken = await this.getAuthToken();   
-    if (this.familyKeys) {
-      return Promise.resolve(this.familyKeys);
-    }
-    else {
+    // if (this.familyKeys) {
+    //   return Promise.resolve(this.familyKeys);
+    // }
+    // else {
       return new Promise((resolve, reject) => {
         let body = {
           authToken: ''+authToken,
@@ -109,7 +109,7 @@ export class ApiProvider {
             reject({message: "Unknown error occured"});
         });
       });
-    }
+   // }
   }
 
   //calls api for login and returns promise

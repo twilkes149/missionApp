@@ -16,6 +16,8 @@ import { ApiProvider } from '../../providers/api/api';
 //pages
 import { PersonPage } from '../person/person';
 import { CreatePersonPage } from '../createPerson/createPerson';
+import { SettingsPage } from '../settings/settings';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-googleMap',
@@ -27,53 +29,77 @@ export class GoogleMapPage {
   private familyKeys;
   private persons;
   public currentPerson;
-  public name:string;
+  private markers;  
 
   constructor(public navCtrl: NavController, 
     private api: ApiProvider,
-    public alert: AlertController) {
+    public alert: AlertController,
+    private storage: Storage) {
+
     this.familyKeys = null;
     this.persons = [];
     this.currentPerson = null;
-    this.addMarkers = this.addMarkers.bind(this);
-    this.name = 'hello';
+    this.addMarkers = this.addMarkers.bind(this);    
+    this.markers = [];
   }
 
-  async ionViewDidLoad() {    
+  //remove all the map markers when we leave
+  ionViewWillLeave() {
+    this.markers.forEach((marker) => {
+      marker.remove();
+    });
+    this.markers = [];
+  }
+
+  //load the map once this screen has loaded
+  ionViewDidLoad() {
     this.loadMap();
+  }
 
-    //get list of persons for each family this user belongs to
-    this.familyKeys = await this.api.getFamilyKeys()
-    .catch((error) => {
-      const message = this.alert.create({
-        title: 'Error',
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      message.present();
-    }); 
+  //runs everytime this becomes the active screen
+  async ionViewDidEnter() {
+    //await this.storage.set('familyKey', null);
+    let currentFamilyKey = await this.storage.get('familyKey');//grab stored family key, to load persons
 
-    if (this.familyKeys && this.familyKeys[0]) {//if there is at least one family key
-      console.log('familyKeys', this.familyKeys);
-      for (let i in this.familyKeys) {//loop for each family
-        let personList = await this.api.getPersons(this.familyKeys[i].familyKey)//get list of persons for a family
-        .catch((error) => {
-          const message = this.alert.create({
-            title: 'Error',
-            subTitle: error.message,
-            buttons: ['OK']
-          });
-          message.present();
-        });
-
-        this.persons.push({ //push familyKey, name, and list of persons
-          family: this.familyKeys[i],
-          persons: personList
-        });
-      }
+    if (!currentFamilyKey) {//if we haven't stored a family key
+      this.familyKeys = null;  
       
-      if (this.persons && this.persons[0]) {
-        this.addMarkers(this.persons[0].persons);//adds all the markers for each person's start event
+      this.familyKeys = await this.api.getFamilyKeys()//get list of families this person belongs to
+      .catch((error) => {
+        const message = this.alert.create({
+          title: 'Error',
+          subTitle: error.message,
+          buttons: ['OK']
+        });
+        message.present();
+      });
+
+      //if user is a member of at least one family
+      if (this.familyKeys && this.familyKeys[0]) {//if there is at least one family key      
+        currentFamilyKey = this.familyKeys[0];
+      }
+      else {
+        currentFamilyKey = null;
+      }     
+    }
+    if (currentFamilyKey) {//if we have a family key, (stored or newly retrieved)
+      currentFamilyKey = currentFamilyKey.familyKey ? currentFamilyKey.familyKey : currentFamilyKey;
+      this.storage.set('familyKey', currentFamilyKey);//save the family key
+      console.log("getting persons for: ", currentFamilyKey);
+      
+      let personList = await this.api.getPersons(currentFamilyKey)//get list of persons for a family
+      .catch((error) => {
+        const message = this.alert.create({
+          title: 'Error',
+          subTitle: error.message,
+          buttons: ['OK']
+        });
+        message.present();
+      });
+    
+      console.log("persons:" , personList);
+      if (personList && personList[0]) {//if there is at least one person
+        this.addMarkers(personList);//adds all the markers for each person's start event
       }
     }
     else {
@@ -87,17 +113,16 @@ export class GoogleMapPage {
   }
 
   loadMap() {
-
     let mapOptions: GoogleMapOptions = {
       camera: {       
          zoom: 5,
          tilt: 0
        }
-    };
-
+    };    
     this.map = GoogleMaps.create('mapCanvas', mapOptions);
   }
 
+  //add markers on a map for all persons
   addMarkers(persons) {
     persons.forEach((person) => {
       if (!person.events || !person.events[0])//don't add marker if there is no event
@@ -121,12 +146,14 @@ export class GoogleMapPage {
       pin.on(GoogleMapsEvent.INFO_CLICK).subscribe(() => {//when the info window is clicked
         console.log(this.currentPerson);
         this.navCtrl.push(PersonPage, {person: this.currentPerson});//go to the person page
-      });   
+      });
+
+      this.markers.push(pin);//push the pin to an array
     });
   }
 
   goToSettingsPage() {
-    console.log('going to settings');
+    this.navCtrl.push(SettingsPage);
   }
 
   goToCreatePersonPage() {

@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar class="header" color="header">
+    <button ion-button menuToggle left (click)="goBack()">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </button>
+
+    <ion-title center>Settings</ion-title>   
+  </ion-toolbar>  
+</ion-header>
+
+<ion-content padding class="backgroundColor"> 
+  <h2>Map</h2>
+  <h2>Family</h2>
+  <button ion-button style="margin: auto; margin-top: 8px;"><ion-icon name="add-circle"></ion-icon> Create Family</button>
+  <button ion-button style="margin: auto; margin-top: 8px;"><ion-icon name="contacts"></ion-icon> Join Family</button>
+  <button ion-button style="margin: auto; margin-top: 8px;"><ion-icon name="share"></ion-icon> Share Family</button>
+  <h4>View Family</h4>
+  <ion-item>
+    <ion-label>Your Families</ion-label>
+    <ion-select *ngFor="let family of families" [(ngModel)]="currentFamily" ionChange="saveFamilyKey()">    
+      <ion-option value={{family.familyKey}}>{{family.name}}</ion-option>    
+    </ion-select>
+  </ion-item>
+</ion-content>

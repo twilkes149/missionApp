@@ -217,7 +217,7 @@ async function insertPerson(person, conn) {
     console.log('error inserting person', error);    
     return false;
   }
-  return true;
+  return personId;
 }
 
 //the function to handle the route for /person, Method: POST
@@ -238,7 +238,8 @@ async function postPerson(req, res, next) {
 
     let query = `START TRANSACTION`;
     await conn.query(query);
-    if (await insertPerson(person, conn)){
+    let personId = await insertPerson(person, conn);
+    if (personId) {
       query = `COMMIT`;
     }
     else {
@@ -247,7 +248,7 @@ async function postPerson(req, res, next) {
     await conn.query(query);
 
     if (query == `COMMIT`) {
-      res.status(200).send({success: true, message: 'Added person'});
+      res.status(200).send({success: true, message: 'Added person', id: personId});
     }
     else {
       res.status(500).send({success: false, message: 'Error adding person'});
