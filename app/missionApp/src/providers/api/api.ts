@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http';
-import {Storage} from '@ionic/storage';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the ApiProvider provider.
@@ -22,6 +22,27 @@ export class ApiProvider {
     this.authToken = null;
     this.familyKeys = null;
     this.persons = null;
+  }
+
+  //an api for creating an event
+  //event must have: title, description, personId, familyKey
+  async createEvent(event) {
+    this.http.setDataSerializer('json');
+    let authToken = await this.getAuthToken();
+    let body = {
+      event: event,
+      authToken: '' + authToken,
+    }
+    return new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + 'event', body, {})
+      .then((response) => {
+        resolve(JSON.parse(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(JSON.parse(error.error));
+      });
+    });
   }
 
   //an api for getting the lat, lng from a query string
@@ -53,6 +74,26 @@ export class ApiProvider {
     }
   }
 
+  //gets infor for one person
+  async getPerson(personId) {
+    this.http.setDataSerializer('json');       
+    let authToken = await this.getAuthToken();
+
+    return new Promise((resolve, reject) => {
+      let body = {//gets need to be strings
+        id: '' + personId,
+        authToken: '' + authToken,
+      }
+      this.http.get(this.baseUrl + 'person', body, {})
+      .then((response) => {        
+        resolve(JSON.parse(response.data));
+      })
+      .catch((error) => {        
+        reject(JSON.parse(error.error));
+      })
+    });
+  }
+
   //function to get all of the persons of a specific family
   async getPersons(familyKey) {
     this.http.setDataSerializer('json');    
@@ -63,7 +104,7 @@ export class ApiProvider {
       let authToken = await this.getAuthToken();
       return new Promise((resolve, reject) => {
         
-        let body = {
+        let body = {//gets need to be strings
           authToken: '' + authToken,
           familyKey: '' + familyKey,
         };
@@ -220,5 +261,6 @@ export class ApiProvider {
     this.storage.set('authToken', null);
     this.storage.set('email', null);
     this.storage.set('password', null);
+    this.storage.set('familyKey', null);
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, NavParams } from 'ionic-angular';
+import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 
 //providers
 import { ApiProvider } from '../../providers/api/api'; 
@@ -21,7 +21,8 @@ export class EventPage {
   constructor (public navCtrl: NavController,
     private api: ApiProvider,
     public params: NavParams,
-    public alert: AlertController) {
+    public alert: AlertController,
+    public loading: LoadingController) {
 
     this.event = this.params.get('event');//get event that is passed in
     if (this.event) {
@@ -41,6 +42,40 @@ export class EventPage {
 
   deleteEvent() {
 
+  }
+
+  async createEvent() {    
+    if (this.title && this.description) { 
+      //show loading indicator
+      const loader = this.loading.create({
+        content: "Logging in...",
+        dismissOnPageChange: true,
+      });
+      loader.present();
+
+      let event = {//create event object
+        title: this.title,
+        description: this.description,
+        personId: this.person.id,
+        familyKey: this.person.familyKey,
+      };
+
+      this.api.createEvent(event)
+      .then((response) => {
+        this.navCtrl.pop();//return to previous page
+      })
+      .catch((error) => {
+        const message = this.alert.create({
+          title: 'Error',
+          subTitle: error.message,
+          buttons: ['OK']
+        });
+        message.present();
+      })
+      .then(() => {
+        loader.dismiss();//disiss the loading indicator
+      });
+    }
   }
 
   checkInput() {
