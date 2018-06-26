@@ -22,6 +22,12 @@ export class SettingsPage {
   }
 
   async ionViewWillEnter() {
+    let familyKey = await this.storage.get("familyKey");//get current selected family
+
+    if (familyKey) {
+      this.currentFamily = familyKey;
+    }
+
     this.families = await this.api.getFamilyKeys()    
     .catch((error) => {
       this.families = null;

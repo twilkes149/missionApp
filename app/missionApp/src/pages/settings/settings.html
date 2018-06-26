@@ -17,8 +17,8 @@
   <h4>View Family</h4>
   <ion-item>
     <ion-label>Your Families</ion-label>
-    <ion-select *ngFor="let family of families" [(ngModel)]="currentFamily" ionChange="saveFamilyKey()">    
-      <ion-option value={{family.familyKey}}>{{family.name}}</ion-option>    
+    <ion-select [(ngModel)]="currentFamily">
+      <ion-option *ngFor="let family of families" value={{family.familyKey}}>{{family.name}}</ion-option>
     </ion-select>
   </ion-item>
 </ion-content>
