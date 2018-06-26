@@ -1,15 +1,17 @@
 <ion-header>
-  <ion-toolbar class="header" color="header">
-    <button ion-button menuToggle left (click)="goBack()">
-      <ion-icon name="arrow-round-back"></ion-icon>
-    </button>
+  <ion-toolbar class="header" color="header">    
+        <button ion-button menuToggle (click)="goBack()">
+          <ion-icon name="arrow-round-back"></ion-icon>
+        </button>
 
-    <ion-title center>Edit Person</ion-title>
+      <div ion-row>
+        <ion-title ion-col>Edit Person</ion-title>
 
-    <!-- Submit Button -->
-  <div right style="width: 100%">
-    <button ion-button ion-row style="margin: auto; margin-top: 8px;">Save</button>
-  </div>
+        <!-- Submit Button --> 
+        <div ion-col style="padding-right: 15px; padding-left: 15px;">   
+          <button ion-button right><ion-icon name="checkmark"></ion-icon>Save</button>    
+        </div>
+      </div>
   </ion-toolbar>  
 </ion-header>
 
