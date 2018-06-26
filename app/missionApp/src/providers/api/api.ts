@@ -24,6 +24,27 @@ export class ApiProvider {
     this.persons = null;
   }
 
+  //an api for deleting an event by id
+  async deleteEvent(eventId) {
+    this.http.setDataSerializer('json');
+    let authToken = await this.getAuthToken();
+    let body = {//delete needs strings as well
+      id: '' + eventId,
+      authToken: '' + authToken
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.delete(this.baseUrl + 'event', body, {})
+      .then((response) => {
+        resolve(JSON.parse(response.data));
+      })
+      .catch((error) => {
+        console.log('api delete event error', error);
+        reject(JSON.parse(error.error));
+      });
+    });
+  }
+
   //an api for creating an event
   //event must have: title, description, personId, familyKey
   async createEvent(event) {

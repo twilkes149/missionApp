@@ -40,15 +40,42 @@ export class EventPage {
     this.navCtrl.pop();
   }
 
+  //calls api to delete an event by its id
   deleteEvent() {
+    if (!this.event || !this.event.id) {//dont delete an event if we don't have id
+      return;
+    }
 
+    //show loading indicator
+    const loader = this.loading.create({
+      content: "Loading...",
+      dismissOnPageChange: true,
+    });
+    loader.present();
+
+    this.api.deleteEvent(this.event.id)
+    .then((response) => {
+      this.navCtrl.pop();//return to prev page
+    })
+    .catch((error) => {
+      const message = this.alert.create({
+        title: 'Error',
+        subTitle: error.message,
+        buttons: ['OK']
+      });
+      message.present();
+    })
+    .then(() => {
+      loader.dismiss();
+    });
   }
 
+  //calls api to create an event
   async createEvent() {    
     if (this.title && this.description) { 
       //show loading indicator
       const loader = this.loading.create({
-        content: "Logging in...",
+        content: "Loading in...",
         dismissOnPageChange: true,
       });
       loader.present();

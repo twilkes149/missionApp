@@ -4,9 +4,9 @@ async function deleteEvent(req, res, next) {
   console.log("delete event");
 
   let conn = res.locals.conn;  
-  let event = req.body.event;
+  let eventId = req.body.id ? req.body.id : req.query.id;
 
-  if (!event || !event.id) {
+  if (!eventId) {
     let error = new Error('Not all required fields were provided');
     error.status = 400;
     error.body = {success: false, message: "Not all required fields were provided"};
@@ -14,7 +14,7 @@ async function deleteEvent(req, res, next) {
   }
 
   try {
-    let query = `DELETE FROM events WHERE id = "${event.id}"`;
+    let query = `DELETE FROM events WHERE id = "${eventId}"`;
     await conn.query(query);
     res.status(200).send({success: true, message: 'Deleted event'});
   }
