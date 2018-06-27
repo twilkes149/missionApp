@@ -46,6 +46,11 @@ export class SettingsPage {
     this.navCtrl.pop();
   }
 
+  logout() {
+    this.api.logout();
+    this.navCtrl.popToRoot();//go to login screen
+  }
+
   ionViewWillLeave() {    
     if (this.currentFamily) {
       console.log('saving currentFamily:', this.currentFamily);

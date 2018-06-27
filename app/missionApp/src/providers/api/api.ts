@@ -219,10 +219,10 @@ export class ApiProvider {
   //calls api for login and returns promise
   login(email, password) {
     this.http.setDataSerializer('json');
-    if (this.authToken) {
-      return Promise.resolve(this.authToken);
-    }
-    else {
+    // if (this.authToken) {
+    //   return Promise.resolve(this.authToken);
+    // }
+    // else {
       let body = {
         email: email,
         password: password,
@@ -242,7 +242,7 @@ export class ApiProvider {
             reject({message: "Unknown error occured"});
         });
       });
-    }
+    //}
   }
 
   //calls api for register and returns a promise
