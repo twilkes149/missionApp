@@ -24,6 +24,27 @@ export class ApiProvider {
     this.persons = null;
   }
 
+  //api for updating an event
+  async updateEvent(event) {
+    this.http.setDataSerializer('json');
+    let authToken = await this.getAuthToken();
+    let body = {
+      authToken: authToken,
+      event: event,
+    }
+
+    return new Promise((resolve, reject) => {
+      this.http.put(this.baseUrl + 'event', body, {})
+      .then((response) => {
+        resolve(JSON.parse(response.data));
+      })
+      .catch((error) => {
+        console.log('error updating event', error);
+        reject(JSON.parse(error.error));
+      });
+    });    
+  }
+
   //an api for deleting an event by id
   async deleteEvent(eventId) {
     this.http.setDataSerializer('json');

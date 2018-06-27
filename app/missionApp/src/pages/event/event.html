@@ -19,7 +19,7 @@
     <ion-textarea [(ngModel)]="description" (input)="checkInput()" ion-row>      
     </ion-textarea>
 
-    <button ion-button ion-row *ngIf="showSubmit" style="margin: auto; margin-top: 8px;">Submit Changes</button>
+    <button ion-button ion-row *ngIf="showSubmit" style="margin: auto; margin-top: 8px;" (click)="updateEvent()">Submit Changes</button>
   </div>
 
   <!-- Create Event -->

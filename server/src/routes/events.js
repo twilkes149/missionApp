@@ -62,7 +62,7 @@ async function putEvent(req, res, next) {
       lnR = conn.query(query);
     }
     if (event.address) {
-      let query = `UPDATE events SET aR = "${event.address}" WHERE id = "${event.id}"`;
+      let query = `UPDATE events SET address = "${event.address}" WHERE id = "${event.id}"`;
       aR = conn.query(query);
     }  
 

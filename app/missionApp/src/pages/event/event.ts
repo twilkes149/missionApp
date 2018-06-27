@@ -70,6 +70,38 @@ export class EventPage {
     });
   }
 
+  updateEvent() {    
+    this.event.description = this.description;//update description
+
+    //show loading indicator
+    const loader = this.loading.create({
+      content: "Loading in...",
+      dismissOnPageChange: true,
+    });
+    loader.present();
+
+    this.api.updateEvent(this.event)
+    .then((result) => {
+      const message = this.alert.create({
+        title: 'Success',
+        subTitle: 'Updated event',
+        buttons: ['OK']
+      });
+      message.present();
+    })
+    .catch ((error) => {
+      const message = this.alert.create({
+        title: 'Error',
+        subTitle: error.message,
+        buttons: ['OK']
+      });
+      message.present();
+    })
+    .then (() => {
+      loader.dismiss();
+    });   
+  }
+
   //calls api to create an event
   async createEvent() {    
     if (this.title && this.description) { 
@@ -108,8 +140,7 @@ export class EventPage {
   checkInput() {
     console.log("checking", this.description, this.event.description);    
     if (this.description != this.event.description) {
-      this.showSubmit = true;
-      console.log("show submit");
+      this.showSubmit = true;      
     }
     else {
       this.showSubmit = false;
