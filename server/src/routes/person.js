@@ -204,8 +204,8 @@ async function insertPerson(person, conn) {
     else {
       query = `INSERT INTO person (firstName, lastName, gender, description, familyKey) VALUES ("${person.firstName}", "${person.lastName}", "${person.gender}", "${person.description}", "${person.familyKey}")`;
     }
-    let result = await conn.query(query);
-    let personId = result.insertId;//getting the id of the most recently inserted person    
+    let result = await conn.query(query);    
+    var personId = result.insertId;//getting the id of the most recently inserted person    
 
     //insert person's parents
     person.parents && person.parents.forEach(async (parentId) => {

@@ -24,6 +24,27 @@ export class ApiProvider {
     this.persons = null;
   }
 
+  //api for creating a person
+  async createPerson(person) {
+    this.http.setDataSerializer('json');
+    let authToken = await this.getAuthToken();
+    let body = {
+      authToken: authToken,
+      person: person,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + 'person', body, {})
+      .then((response) => {
+        resolve(JSON.parse(response.data));
+      })  
+      .catch((error) => {
+        console.log('create person error', error);
+        reject(JSON.parse(error.error));
+      });
+    });
+  }
+
   //api for updating an event
   async updateEvent(event) {
     this.http.setDataSerializer('json');

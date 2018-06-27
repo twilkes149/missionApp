@@ -185,7 +185,7 @@ Request:
   parentId (optional): ['id of parent', 'id of parent'],
   familyKey: 'the key of family this perosn belongs to',
 
-  //not required
+  //not implemented
   startEvent: { //every person will have a psuedo event (title: '_START') that describes their mission home (this is where the pin on the map will be located)
     lat: 'lat of mission home',
     lng: 'lng of mission home',
@@ -266,12 +266,12 @@ Method: POST
 Request:
 ```
 {
-  authKey: 'the user's authKey',
-  id: 'id of the event',
+  authKey: 'the user's authKey',  
   title: 'event title',
   description: 'event description',
   lat: 'event lat',
   lng: 'event lng',
+  address: 'address of the event'
   personId: 'person id this event belongs to',
   familyKey: 'family key this event belongs to'
 }

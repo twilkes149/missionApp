@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, NavParams } from 'ionic-angular';
+import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 
 //providers
 import { ApiProvider } from '../../providers/api/api';
+import { Storage } from '@ionic/storage';
 
 import {
   GoogleMaps,
@@ -26,6 +27,7 @@ export class CreatePersonPage {
     lastName: '',
     gender: 'm',
     description: '',
+    familyKey: null,
   };
 
   public searchAddress:string;
@@ -39,7 +41,9 @@ export class CreatePersonPage {
   constructor (public navCtrl: NavController,
     private api: ApiProvider,
     public params: NavParams,
-    public alert: AlertController) {
+    public alert: AlertController,
+    private storage: Storage,
+    public load: LoadingController) {
     
     this.loading = false;
   }
@@ -52,8 +56,68 @@ export class CreatePersonPage {
     this.navCtrl.pop();
   }
 
-  loadMap() {
+  //calls api to create a person and appropiate _START event
+  async createPerson() {
+    //make sure all fields needed are entered
+    if (!this.person.firstName || !this.person.lastName || !this.person.gender || !this.person.description || !this.lat || !this.lng || !this.address) {
+      const message = this.alert.create({
+        title: 'Error',
+        subTitle: 'Not all required fields were filled out',
+        buttons: ['OK']
+      });
+      message.present();
+      return;
+    }
+    else {
+      //show loading indicator
+      const loader = this.load.create({
+        content: "Loading...",
+        dismissOnPageChange: true,
+      });
+      loader.present();
 
+      let familyKey = await this.storage.get('familyKey');
+      this.person.familyKey = familyKey;   
+
+      //insert person
+      this.api.createPerson(this.person)
+      .then((result:any) => {
+        //insert start event for person
+        let event = {
+          title: '_START',
+          description: 'start',
+          lat: this.lat,
+          lng: this.lng,
+          address: this.address,
+          personId: result.id,
+          familyKey: familyKey
+        };
+
+        this.api.createEvent(event)
+        .then((result) => {
+          this.navCtrl.pop();
+        })
+        .catch ((error) => {
+          loader.dismiss();
+          const message = this.alert.create({
+            title: 'Error',
+            subTitle: error.message,//change to error createing person
+            buttons: ['OK']
+          });
+        });
+      })
+      .catch((error) => {
+        loader.dismiss();
+        const message = this.alert.create({
+          title: 'Error',
+          subTitle: error.message,
+          buttons: ['OK']
+        });
+      });      
+    }    
+  }
+
+  loadMap() {
     let mapOptions: GoogleMapOptions = {
       camera: {       
          zoom: 0,
