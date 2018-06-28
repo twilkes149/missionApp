@@ -40,15 +40,37 @@ export class EditPersonPage {
   }
 
   ionViewDidLoad() {
-    this.loadMap();
+    //this.loadMap();
   }
 
   goBack() {
     this.navCtrl.pop();
   }
 
-  loadMap() {
+  updatePerson() {
+    if (!this.person) {
+      return;
+    }
+    this.api.updatePerson(this.person)
+    .then((response) => {
+      const message = this.alert.create({
+        title: 'Success',
+        subTitle: 'Person was updated',
+        buttons: ['OK']
+      });
+      message.present();
+    })
+    .catch((error) => {
+      const message = this.alert.create({
+        title: 'Error',
+        subTitle: error.error,
+        buttons: ['OK']
+      });
+      message.present();
+    });
+  }
 
+  loadMap() {
     let mapOptions: GoogleMapOptions = {
       camera: {       
          zoom: 0,
