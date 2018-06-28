@@ -14,6 +14,7 @@ var resetPasswordRoute = require('./routes/resetPassword');
 var createFamilyRoute = require('./routes/createFamily');
 var joinFamilyRoute = require('./routes/joinFamily');
 var familyRoute = require('./routes/family');
+var shareFamilyRoute = require('./routes/shareFamily');
 //person routes
 var personRoutes = require('./routes/person');
 //event routes
@@ -43,6 +44,7 @@ server.use(authenticate);
 server.post('/createFamily', createFamilyRoute);
 server.post('/joinFamily', joinFamilyRoute);
 server.get('/family', familyRoute);
+server.post('shareFamily', shareFamilyRoute);
 
 //person routes
 server.post('/person', personRoutes.postPerson);
