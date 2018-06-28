@@ -18,13 +18,15 @@ router.post('/createFamily', async (req, res, next) => {
   try {
     //create the family
     let query = `INSERT INTO families (name) VALUES ("${familyName}")`;
-    await conn.query(query);
+    let result = await conn.query(query);
+    let key = result.insertId;//get auto generaged family id
 
-    //grab the auto generated family id
+    /*grab the auto generated family id
     query = `SELECT MAX(\`key\`) as \'key\' FROM families WHERE name = "${familyName}"`;
     let result = await conn.query(query);
     
     let key = result[0].key;//grab key of the family
+    */
     //let user join family
     query = `INSERT INTO familyuser(email, familyKey) VALUES("${email}", "${key}")`;
     await conn.query(query);

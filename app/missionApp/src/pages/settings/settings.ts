@@ -42,6 +42,54 @@ export class SettingsPage {
     }
   }
 
+  createFamily() {
+    console.log('creating family');
+    const prompt = this.alert.create({
+      title: 'Create Family',//prompt user for to enter name for the new family
+      message: "Enter a name for the new family group",
+      inputs: [
+        {
+          name: 'familyName',
+          placeholder: 'name'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Create',
+          handler: data => {
+            console.log('Saved clicked', data.familyName);
+
+            //call api to create family
+            this.api.createFamily(data.familyName)
+            .then((result) => {//success, show message
+              const message1 = this.alert.create({
+                title: 'Success',
+                subTitle: 'Family Created',
+                buttons: ['OK']
+              });
+              message1.present();
+            })            
+            .catch((error) => {//error, show message
+              const message = this.alert.create({
+                title: 'Error',
+                subTitle: error.error,
+                buttons: ['OK']
+              });
+              message.present();
+            });
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
   goBack() {
     this.navCtrl.pop();
   }
