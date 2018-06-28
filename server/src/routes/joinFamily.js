@@ -7,18 +7,38 @@ router.post('/joinFamily', async (req, res, next) => {
   let conn = res.locals.conn;
   let email = res.locals.email;
 
-  let familyKey = req.body.familyKey ? Database.sanitize(req.body.familyKey, conn) : null;
-  if (!familyKey || typeof req.body.familyKey != "number") {
-    let error = new Error("Family key not provided, or is not a number");
+  let token = req.body.token ? Database.sanitize(req.body.token, conn) : null;
+
+
+  if (!token) {
+    let error = new Error("Not all required fields were provided");
     error.status = 400;
-    error.body = {success: false, message: 'Family key not provided, or is not a number'};
+    error.body = {success: false, message: 'Not all required fields were provided'};
     return next(error);
   }
 
   try {
-    //check if user has already joined family
-    let query = `SELECT * FROM familyuser WHERE email="${email}" AND familyKey = "${familyKey}"`;
+    let query = 'BEGIN';
+    await conn.query(query);
+
+    //grab family key from temp table
+    query = `SELECT familyKey FROM sharefamily WHERE token = "${token}"`;
     let result = await conn.query(query);
+
+    if (!result || !result[0]) {
+      let error = new Error('This family has not been shared with you');
+      error.status = 403;
+      error.body = {success: false, message: 'This family has not been shared with you'};
+      return next(error);
+    }
+
+    let familyKey = result[0].familyKey;
+    query = `DELETE FROM sharefamily WHERE token = "${token}"`;//remove temp token from table so noone else can join this family
+    await conn.query(query);
+
+    //check if user has already joined family
+    query = `SELECT * FROM familyuser WHERE email="${email}" AND familyKey = "${familyKey}"`;
+    result = await conn.query(query);
     if (result[0]) {
       let error = new Error("already joined this family");
       error.status = 409;
@@ -28,6 +48,9 @@ router.post('/joinFamily', async (req, res, next) => {
 
     //let user join family
     query = `INSERT INTO familyuser(email, familyKey) VALUES("${email}", "${familyKey}")`;
+    await conn.query(query);
+
+    query = 'CONFIRM';
     await conn.query(query);
 
     res.status(200).send({success: true, message: 'Joined family'});
