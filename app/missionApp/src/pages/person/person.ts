@@ -56,6 +56,43 @@ export class PersonPage {
     this.gender = (this.person.gender == 'm') ? 'man' : 'woman';
   }
 
+  confirmDelete() {
+    const message = this.alert.create({
+      title: 'Are you sure?',
+      message: 'This will remove the person permanently',
+      buttons: [
+      {
+        text: 'Cancel',
+        handler: () => {
+          console.log('test');
+        }      
+      },
+      {
+        text: 'Delete',
+        handler: () => {
+          this.deletePerson();
+        }
+      }]
+    });
+
+    message.present();
+  }
+
+  deletePerson() {
+    this.api.deletePerson(this.person.id)
+    .then(() => {
+      this.navCtrl.pop();
+    })
+    .catch((error) => {      
+      const message = this.alert.create({
+        title: 'Error',
+        subTitle: error.message,
+        buttons: ['OK']
+      });
+      message.present();
+    });
+  }
+
   ionViewWillLeave() {
     //page is leaving, so set the update flag
     this.update = true;

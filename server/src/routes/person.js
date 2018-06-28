@@ -3,10 +3,10 @@ var Events = require('./events');
 
 async function deletePerson(req, res, next) {
   let conn = res.locals.conn;
-  let person = req.body.person;
+  let personId = req.query.id;
   console.log("delete person");
 
-  if (!person || !person.id) {
+  if (!personId) {
     let error = new Error('Not all required fields were provided');
     error.status = 400;
     error.body = {success: false, message: "Not all required fields were provided"};
@@ -14,8 +14,24 @@ async function deletePerson(req, res, next) {
   }
 
   try {
-    let query = `DELETE FROM person WHERE id = "${person.id}"`;
+    let query = 'BEGIN';
     await conn.query(query);
+
+    //deleting person
+    query = `DELETE FROM person WHERE id = "${personId}"`;
+    await conn.query(query);
+
+    //deleting associated events
+    query = `DELETE FROM events WHERE personId = "${personId}"`;
+    await conn.query(query);
+
+    //deleting parent & child link
+    query = `DELETE FROM parents WHERE personId = "${personId}" OR parentId = "${personId}"`    
+    await conn.query(query);
+
+    query = 'COMMIT';
+    await conn.query(query);
+
     res.status(200).send({success: true, message: 'Deleted person'});
   }
   catch (error) {

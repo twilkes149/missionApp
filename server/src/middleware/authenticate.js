@@ -7,7 +7,7 @@ async function authenticate(req, res, next) {
   if (!authToken) {
     let error = new Error('User not authorized');
     error.status = 401;
-    error.body = {success: false, message: 'User not authorized'};
+    error.body = {success: false, message: 'User not authorized. Try logging in again.'};
     return next(error);
   }
   try {
@@ -17,7 +17,7 @@ async function authenticate(req, res, next) {
     if (!email) {
       let error = new Error('User not authorized');
       error.status = 401;
-      error.body = {success: false, message: 'User not authorized'};
+      error.body = {success: false, message: 'User not authorized. Try loggin in again.'};
       return next(error);
     }
 
@@ -27,7 +27,7 @@ async function authenticate(req, res, next) {
   catch (error) {
     error = new Error('User not authorized');
     error.status = 401;
-    error.body = {success: false, message: 'User not authorized'};
+    error.body = {success: false, message: 'User not authorized. Try logging in again.'};
     return next(error);
   }
 }

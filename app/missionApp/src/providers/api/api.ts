@@ -24,6 +24,28 @@ export class ApiProvider {
     this.persons = null;
   }
 
+  //api for deleting a person by id
+  async deletePerson(personId) {
+    this.http.setDataSerializer('json');
+    let authToken = await this.getAuthToken();
+
+    let body = {
+      authToken: '' + authToken,
+      id: '' + personId,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.delete(this.baseUrl + 'person', body, {})
+      .then((response) => {
+        resolve(JSON.parse(response.data));
+      })
+      .catch((error) => {
+        console.log('delete person error', error);
+        reject(JSON.parse(error.error));
+      });
+    });
+  }
+
   //api for creating a person
   async createPerson(person) {
     this.http.setDataSerializer('json');
