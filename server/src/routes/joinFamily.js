@@ -33,8 +33,6 @@ router.post('/joinFamily', async (req, res, next) => {
     }
 
     let familyKey = result[0].familyKey;
-    query = `DELETE FROM sharefamily WHERE token = "${token}"`;//remove temp token from table so noone else can join this family
-    await conn.query(query);
 
     //check if user has already joined family
     query = `SELECT * FROM familyuser WHERE email="${email}" AND familyKey = "${familyKey}"`;

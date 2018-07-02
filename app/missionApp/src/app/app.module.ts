@@ -21,6 +21,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { HTTP } from '@ionic-native/http';
 import { ApiProvider } from '../providers/api/api';
 import { GoogleMaps } from '@ionic-native/google-maps';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     HTTP,
     ApiProvider,
     GoogleMaps,
+    SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

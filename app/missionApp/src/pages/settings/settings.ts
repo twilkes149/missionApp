@@ -4,6 +4,7 @@ import { NavController, AlertController, NavParams } from 'ionic-angular';
 //providers
 import { ApiProvider } from '../../providers/api/api';
 import { Storage } from '@ionic/storage';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @Component({
   selector: 'page-settings',
@@ -18,7 +19,8 @@ export class SettingsPage {
     public params: NavParams,
     public alert: AlertController,
     private api: ApiProvider,
-    private storage: Storage) {
+    private storage: Storage,
+    private sharing: SocialSharing) {
   }
 
   async ionViewWillEnter() {
@@ -40,6 +42,37 @@ export class SettingsPage {
         return family;
       });
     }
+  }
+
+  async shareFamily() {
+    let familyKey = this.currentFamily;
+    console.log('sharing family', this.currentFamily);
+
+    this.api.shareFamily(familyKey)
+    .then((response:any) => {
+      let token = response.token;
+      this.sharing.share(`I would like to share my family group with you on the mission app. You can use this token ${token} to join my family group.`, 'Share Family')
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log('sharing error', error);
+        const message = this.alert.create({
+        title: 'Error',
+        subTitle: 'Something when wrong when we tried sharing this family',
+        buttons: ['OK']
+      });
+      message.present();
+      });
+    })
+    .catch((error) => {
+      const message = this.alert.create({
+        title: 'Error',
+        subTitle: error.message,
+        buttons: ['OK']
+      });
+      message.present();
+    });
   }
 
   createFamily() {

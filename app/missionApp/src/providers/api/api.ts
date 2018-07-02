@@ -24,6 +24,28 @@ export class ApiProvider {
     this.persons = null;
   }
 
+  //api for sharing a family
+  async shareFamily(familyKey) {
+    this.http.setDataSerializer('json');
+    let authToken = await this.getAuthToken();
+    
+    let body = {
+      authToken: authToken,
+      familyKey: familyKey,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + 'shareFamily', body, {})
+      .then((response) => {
+        resolve(JSON.parse(response.data));
+      })
+      .catch ((error) => {
+        console.log('error sharing family', error);
+        reject(JSON.parse(error.error));
+      });
+    })
+  }
+
   //api for creating a family
   async createFamily(familyName) {
     this.http.setDataSerializer('json');

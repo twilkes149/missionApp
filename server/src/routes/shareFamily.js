@@ -10,7 +10,9 @@ router.post('/shareFamily', async (req, res, next) => {
   let email = res.locals.email;
 
   try {    
-    let familyKey = req.body.familyKey ? Database.sanitize(req.body.familyKey, conn) : null;
+    let familyKey = req.body.familyKey ? Database.sanitize(req.body.familyKey, conn) : null;    
+    familyKey = parseInt(familyKey.replace(/^'|'$/g, ''));
+    console.log(familyKey, typeof familyKey);
 
     if (!familyKey) {
       let error = new Error("Not all required fields were provided");
@@ -20,8 +22,8 @@ router.post('/shareFamily', async (req, res, next) => {
     }
 
     //make sure this user is a part of the family
-    let query = `SELECT FROM familyuser WHERE email = "${email}" AND familyKey = "${familyKey}"`;
-    let result = conn.query(query);
+    let query = `SELECT * FROM familyuser WHERE email = "${email}" AND familyKey = "${familyKey}"`;
+    let result = await conn.query(query);    
 
     if (!result || !result[0]) {//if there was not a result
       let error = new Error('You are not part of that family');
@@ -57,3 +59,5 @@ function generateToken(length) {
   }
   return token;
 }
+
+module.exports = router;

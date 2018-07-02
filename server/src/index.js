@@ -44,7 +44,7 @@ server.use(authenticate);
 server.post('/createFamily', createFamilyRoute);
 server.post('/joinFamily', joinFamilyRoute);
 server.get('/family', familyRoute);
-server.post('shareFamily', shareFamilyRoute);
+server.post('/shareFamily', shareFamilyRoute);
 
 //person routes
 server.post('/person', personRoutes.postPerson);
