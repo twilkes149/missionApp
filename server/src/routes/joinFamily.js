@@ -48,7 +48,7 @@ router.post('/joinFamily', async (req, res, next) => {
     query = `INSERT INTO familyuser(email, familyKey) VALUES("${email}", "${familyKey}")`;
     await conn.query(query);
 
-    query = 'CONFIRM';
+    query = 'COMMIT';
     await conn.query(query);
 
     res.status(200).send({success: true, message: 'Joined family'});

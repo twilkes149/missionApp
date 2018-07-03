@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, NavParams } from 'ionic-angular';
+import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 
 //providers
 import { ApiProvider } from '../../providers/api/api';
@@ -20,7 +20,8 @@ export class SettingsPage {
     public alert: AlertController,
     private api: ApiProvider,
     private storage: Storage,
-    private sharing: SocialSharing) {
+    private sharing: SocialSharing,
+    public loading: LoadingController) {
   }
 
   async ionViewWillEnter() {
@@ -29,7 +30,11 @@ export class SettingsPage {
     if (familyKey) {
       this.currentFamily = familyKey;
     }
+    this.getFamilies();
+  }
 
+  //calls api to get a list of families this user belongs to
+  async getFamilies() {
     this.families = await this.api.getFamilyKeys()    
     .catch((error) => {
       this.families = null;
@@ -44,14 +49,74 @@ export class SettingsPage {
     }
   }
 
-  async shareFamily() {
+  joinFamily() {
+    const prompt = this.alert.create({
+      title: 'Join Family',
+      message: "Please enter the token you should have received in a text or email here to join a family:",
+      inputs: [
+        {
+          name: 'token',
+          placeholder: 'token'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Join',
+          handler: data => {    
+            //show loading indicator
+            const loader = this.loading.create({
+              content: "Loading...",
+              dismissOnPageChange: true,
+            });
+            loader.present();        
+            let token = data.token;
+
+            if (!token) {
+              return;
+            }
+
+            this.api.joinFamily(token)
+            .then((result) => {              
+              const message = this.alert.create({
+                title: 'Success',
+                subTitle: 'Successfuly joined family',
+                buttons: ['OK']
+              });
+              message.present();
+              this.getFamilies();//get list of families
+            })
+            .catch((error) => {
+              const message = this.alert.create({
+                title: 'Error',
+                subTitle: error.message,
+                buttons: ['OK']
+              });
+              message.present();
+            })
+            .then(() => {
+              loader.dismiss();
+            });
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  shareFamily() {
     let familyKey = this.currentFamily;
     console.log('sharing family', this.currentFamily);
 
     this.api.shareFamily(familyKey)
     .then((response:any) => {
       let token = response.token;
-      this.sharing.share(`I would like to share my family group with you on the mission app. You can use this token ${token} to join my family group.`, 'Share Family')
+      this.sharing.share(`I would like to share my family group with you on the mission app. You can use this token: ${token} to join my family group.`, 'Share Family')
       .then((result) => {
         console.log(result);
       })
@@ -111,7 +176,7 @@ export class SettingsPage {
             .catch((error) => {//error, show message
               const message = this.alert.create({
                 title: 'Error',
-                subTitle: error.error,
+                subTitle: error.message,
                 buttons: ['OK']
               });
               message.present();

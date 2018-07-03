@@ -24,6 +24,28 @@ export class ApiProvider {
     this.persons = null;
   }
 
+  //api for joining a family
+  async joinFamily(token) {
+    this.http.setDataSerializer('json');
+    let authToken = await this.getAuthToken();
+
+    let body = {
+      authToken: authToken,
+      token: token,
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(this.baseUrl + 'joinFamily', body, {})
+      .then((response) => {
+        resolve(JSON.parse(response.data));
+      })
+      .catch((error) => {
+        console.log('error joining family', error);
+        reject(JSON.parse(error.error));
+      });
+    });
+  }
+
   //api for sharing a family
   async shareFamily(familyKey) {
     this.http.setDataSerializer('json');
@@ -324,6 +346,7 @@ export class ApiProvider {
           resolve(this.authToken);
         })
         .catch((error) => {//let user know something happened, probalby not caused by my api
+          console.log('login error', error);
           if (error.error)      
             reject(JSON.parse(error.error));
           else//not sure what happened
