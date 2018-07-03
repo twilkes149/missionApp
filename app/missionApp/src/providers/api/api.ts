@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class ApiProvider {
   //private baseUrl = 'https://twilkes-base-server.herokuapp.com/';
-  private baseUrl = 'http://192.168.1.6:8080/';
+  private baseUrl = 'http://192.168.1.9:8080/';
   private geocodeURL = 'https://maps.googleapis.com/maps/api/geocode/json';
   private apiKey = 'AIzaSyD4Fy4u7GOluh_P7fts8v6Cd9_ptlCQ8Os';  
   private authToken;  
@@ -430,11 +430,13 @@ export class ApiProvider {
   }
 
   //destroys current user data
-  logout() {
+  async logout() {
     this.authToken = null;
-    this.storage.set('authToken', null);
-    this.storage.set('email', null);
-    this.storage.set('password', null);
-    this.storage.set('familyKey', null);
+    this.familyKeys = null;
+    this.persons = null;
+    await this.storage.remove('authToken');
+    await this.storage.remove('email');
+    await this.storage.remove('password');
+    await this.storage.remove('familyKey');
   }
 }
