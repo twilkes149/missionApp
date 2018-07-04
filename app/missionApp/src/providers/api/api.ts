@@ -40,7 +40,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })
       .catch((error) => {
-        console.log('error joining family', error);
+        //console.log('error joining family', error);
         reject(JSON.parse(error.error));
       });
     });
@@ -62,7 +62,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })
       .catch ((error) => {
-        console.log('error sharing family', error);
+        //console.log('error sharing family', error);
         reject(JSON.parse(error.error));
       });
     })
@@ -84,7 +84,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })
       .catch((error) => {
-        console.log('error creating family', error);
+        //console.log('error creating family', error);
         reject(JSON.parse(error.error));
       });
     });
@@ -106,7 +106,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })
       .catch((error) => {
-        console.log('error updating person', error);
+        //console.log('error updating person', error);
         reject(JSON.parse(error.error));
       });
     });
@@ -128,7 +128,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })
       .catch((error) => {
-        console.log('delete person error', error);
+        //console.log('delete person error', error);
         reject(JSON.parse(error.error));
       });
     });
@@ -149,7 +149,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })  
       .catch((error) => {
-        console.log('create person error', error);
+        //console.log('create person error', error);
         reject(JSON.parse(error.error));
       });
     });
@@ -170,7 +170,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })
       .catch((error) => {
-        console.log('error updating event', error);
+        //console.log('error updating event', error);
         reject(JSON.parse(error.error));
       });
     });    
@@ -191,7 +191,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })
       .catch((error) => {
-        console.log('api delete event error', error);
+        //console.log('api delete event error', error);
         reject(JSON.parse(error.error));
       });
     });
@@ -212,7 +212,7 @@ export class ApiProvider {
         resolve(JSON.parse(response.data));
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         reject(JSON.parse(error.error));
       });
     });
@@ -232,7 +232,7 @@ export class ApiProvider {
         resolve(result);
       })
       .catch((error) => {
-        console.log('google api error', error);
+        //console.log('google api error', error);
         reject({error: 'Error searching'});
       });      
     });
@@ -287,7 +287,7 @@ export class ApiProvider {
           resolve(this.persons);
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
           if (error.error)      
             reject(JSON.parse(error.error));
           else//not sure what happened
@@ -316,7 +316,7 @@ export class ApiProvider {
           resolve(this.familyKeys);
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
           if (error.error)      
             reject(JSON.parse(error.error));
           else//not sure what happened
@@ -346,7 +346,7 @@ export class ApiProvider {
           resolve(this.authToken);
         })
         .catch((error) => {//let user know something happened, probalby not caused by my api
-          console.log('login error', error);
+          //console.log('login error', error);
           if (error.error)      
             reject(JSON.parse(error.error));
           else//not sure what happened

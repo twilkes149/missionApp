@@ -64,7 +64,7 @@ export class PersonPage {
       {
         text: 'Cancel',
         handler: () => {
-          console.log('test');
+          //console.log('test');
         }      
       },
       {

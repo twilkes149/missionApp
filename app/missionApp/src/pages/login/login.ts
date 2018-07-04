@@ -76,7 +76,7 @@ export class LoginPage {
       //on failure will return object describing failure
       this.api.login(this.email, this.password)
       .then((result) => {
-        console.log("api call result", result);
+        //console.log("api call result", result);
         
         this.storage.set('email', this.email);
         this.storage.set('password', this.password);
@@ -91,7 +91,7 @@ export class LoginPage {
           buttons: ['OK']
         });
         message.present();
-        console.log("api error: ", error);
+        //console.log("api error: ", error);
       })
       .then(() => {
         loader.dismiss();

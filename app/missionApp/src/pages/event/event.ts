@@ -138,7 +138,7 @@ export class EventPage {
   }
 
   checkInput() {
-    console.log("checking", this.description, this.event.description);    
+    //console.log("checking", this.description, this.event.description);    
     if (this.description != this.event.description) {
       this.showSubmit = true;      
     }

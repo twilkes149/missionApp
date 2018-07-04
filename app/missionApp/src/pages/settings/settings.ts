@@ -62,8 +62,7 @@ export class SettingsPage {
       buttons: [
         {
           text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
+          handler: data => {            
           }
         },
         {
@@ -120,18 +119,15 @@ export class SettingsPage {
       });
       message.present();
       return;
-    }
-    console.log('sharing family', this.currentFamily);
+    }    
 
     this.api.shareFamily(familyKey)
     .then((response:any) => {
       let token = response.token;
       this.sharing.share(`I would like to share my family group with you on the mission app. You can use this token: ${token} to join my family group.`, 'Share Family')
-      .then((result) => {
-        console.log(result);
+      .then((result) => {        
       })
-      .catch((error) => {
-        console.log('sharing error', error);
+      .catch((error) => {        
         const message = this.alert.create({
           title: 'Error',
           subTitle: 'Something when wrong when we tried sharing this family',
@@ -150,8 +146,7 @@ export class SettingsPage {
     });
   }
 
-  createFamily() {
-    console.log('creating family');
+  createFamily() {    
     const prompt = this.alert.create({
       title: 'Create Family',//prompt user for to enter name for the new family
       message: "Enter a name for the new family group",
@@ -164,15 +159,12 @@ export class SettingsPage {
       buttons: [
         {
           text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
+          handler: data => {            
           }
         },
         {
           text: 'Create',
-          handler: data => {
-            console.log('Saved clicked', data.familyName);
-
+          handler: data => {            
             if (!data.familyName) {
               return;
             }
@@ -211,8 +203,7 @@ export class SettingsPage {
   }
 
   ionViewWillLeave() {    
-    if (this.currentFamily) {
-      console.log('saving currentFamily:', this.currentFamily);
+    if (this.currentFamily) {      
       this.storage.set('familyKey', this.currentFamily);
     }
   }

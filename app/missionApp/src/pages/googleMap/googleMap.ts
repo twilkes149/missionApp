@@ -85,7 +85,7 @@ export class GoogleMapPage {
     if (currentFamilyKey) {//if we have a family key, (stored or newly retrieved)
       currentFamilyKey = currentFamilyKey.familyKey ? currentFamilyKey.familyKey : currentFamilyKey;
       this.storage.set('familyKey', currentFamilyKey);//save the family key
-      console.log("getting persons for: ", currentFamilyKey);
+      //console.log("getting persons for: ", currentFamilyKey);
       
       let personList = await this.api.getPersons(currentFamilyKey)//get list of persons for a family
       .catch((error) => {
@@ -97,7 +97,7 @@ export class GoogleMapPage {
         message.present();
       });
     
-      console.log("persons:" , personList);
+      //console.log("persons:" , personList);
       if (personList && personList[0]) {//if there is at least one person
         this.addMarkers(personList);//adds all the markers for each person's start event
       }
@@ -144,7 +144,7 @@ export class GoogleMapPage {
       });
 
       pin.on(GoogleMapsEvent.INFO_CLICK).subscribe(() => {//when the info window is clicked
-        console.log(this.currentPerson);
+        //console.log(this.currentPerson);
         this.navCtrl.push(PersonPage, {person: this.currentPerson});//go to the person page
       });
 

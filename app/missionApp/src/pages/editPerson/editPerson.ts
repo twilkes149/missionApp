@@ -101,7 +101,7 @@ export class EditPersonPage {
     this.loading = true;
     this.api.getLocation(this.searchAddress)
     .then((result:any) => {
-      console.log(result);
+      //console.log(result);
 
       if (!result || !result.results || !result.results[0]) {
         return;

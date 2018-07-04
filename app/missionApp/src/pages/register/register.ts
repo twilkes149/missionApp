@@ -63,7 +63,7 @@ export class RegisterPage {
 
       this.api.register(this.password, this.email, this.firstName, this.lastName)
       .then((result) => {
-        console.log("API register result: ", result)
+        //console.log("API register result: ", result)
 
         //navigate to appropiate page here
         this.navCtrl.push(GoogleMapPage);
@@ -75,7 +75,7 @@ export class RegisterPage {
           buttons: ['OK']
         });
         message.present();
-        console.log("api error: ", error);
+        //console.log("api error: ", error);
       })
       .then(() => {
         loader.dismiss();//dismiss loading indicator
