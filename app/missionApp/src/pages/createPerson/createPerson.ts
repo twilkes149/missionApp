@@ -67,7 +67,7 @@ export class CreatePersonPage {
       });
       message.present();
       return;
-    }
+    }    
     else {
       //show loading indicator
       const loader = this.load.create({
@@ -77,6 +77,16 @@ export class CreatePersonPage {
       loader.present();
 
       let familyKey = await this.storage.get('familyKey');
+
+      if (!familyKey) {
+        const message = this.alert.create({
+          title: 'Error',
+          subTitle: 'You need to create/join a family group before you can create a person',
+          buttons: ['OK']
+        });
+        message.present();
+        return;
+      }
       this.person.familyKey = familyKey;   
 
       //insert person

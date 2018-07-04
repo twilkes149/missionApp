@@ -36,6 +36,7 @@ export class EditPersonPage {
     public alert: AlertController) {
 
     this.person = this.params.get('person');
+    this.address = this.person.events[0].address;
     this.loading = false;
   }
 
@@ -51,14 +52,27 @@ export class EditPersonPage {
     if (!this.person) {
       return;
     }
+
+    this.person.events[0].address = this.address;
     this.api.updatePerson(this.person)
     .then((response) => {
-      const message = this.alert.create({
-        title: 'Success',
-        subTitle: 'Person was updated',
-        buttons: ['OK']
-      });
-      message.present();
+      this.api.updateEvent(this.person.events[0])//update address
+      .then((result) => {
+        const message = this.alert.create({
+          title: 'Success',
+          subTitle: 'Person was updated',
+          buttons: ['OK']
+        });
+        message.present();
+      })
+      .catch((error) => {
+        const message = this.alert.create({
+          title: 'Error',
+          subTitle: error.message,
+          buttons: ['OK']
+        });
+        message.present();
+      });        
     })
     .catch((error) => {
       const message = this.alert.create({

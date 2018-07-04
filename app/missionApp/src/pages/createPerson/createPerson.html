@@ -49,7 +49,16 @@
       <ion-textarea ion-col type="text" [(ngModel)]="person.description" placeholder="Person's description"></ion-textarea>
     </div>    
 
-    <div class="spacer" style="width: 100%; height: 60px"></div>
+    <div class="spacer" style="width: 100%; height: 15px"></div>
+
+    <div ion-row>
+      <ion-item ion-col>
+        <ion-label color="#000000" stacked>Mission Name:</ion-label>
+        <ion-input type="text" [(ngModel)]="address"></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="spacer" style="width: 100%; height: 70px"></div>
 
     <!-- City search -->
     <div ion-row>
@@ -71,6 +80,6 @@
 
   <!-- Submit Button -->
   <div style="width: 100%">
-    <button ion-button ion-row style="margin: auto; margin-top: 8px;" (click)="createPerson()">Create Person</button>
+    <button ion-button ion-row style="margin: auto; margin-top: 8px;" (click)="createPerson()"><ion-icon name="checkmark"></ion-icon>Create Person</button>
   </div>
 </ion-content>

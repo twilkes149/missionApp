@@ -68,18 +68,18 @@ export class SettingsPage {
         },
         {
           text: 'Join',
-          handler: data => {    
+          handler: data => { 
+            let token = data.token;
+            if (!token) {
+              return;
+            }
+
             //show loading indicator
             const loader = this.loading.create({
               content: "Loading...",
               dismissOnPageChange: true,
             });
-            loader.present();        
-            let token = data.token;
-
-            if (!token) {
-              return;
-            }
+            loader.present();                       
 
             this.api.joinFamily(token)
             .then((result) => {              
@@ -111,6 +111,16 @@ export class SettingsPage {
 
   shareFamily() {
     let familyKey = this.currentFamily;
+
+    if (!familyKey) {
+      const message = this.alert.create({
+        title: 'Error',
+        subTitle: 'You have not selected a family to share',
+        buttons: ['OK']
+      });
+      message.present();
+      return;
+    }
     console.log('sharing family', this.currentFamily);
 
     this.api.shareFamily(familyKey)
@@ -123,11 +133,11 @@ export class SettingsPage {
       .catch((error) => {
         console.log('sharing error', error);
         const message = this.alert.create({
-        title: 'Error',
-        subTitle: 'Something when wrong when we tried sharing this family',
-        buttons: ['OK']
-      });
-      message.present();
+          title: 'Error',
+          subTitle: 'Something when wrong when we tried sharing this family',
+          buttons: ['OK']
+        });
+        message.present();
       });
     })
     .catch((error) => {
@@ -163,6 +173,9 @@ export class SettingsPage {
           handler: data => {
             console.log('Saved clicked', data.familyName);
 
+            if (!data.familyName) {
+              return;
+            }
             //call api to create family
             this.api.createFamily(data.familyName)
             .then((result) => {//success, show message

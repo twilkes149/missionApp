@@ -4,11 +4,21 @@
       <ion-icon name="arrow-round-back"></ion-icon>
     </button>
 
-    <ion-title center>{{name}}</ion-title>
+    <div ion-row>
+      <ion-title center ion-col>{{name}}</ion-title>
 
-    <button ion-button menuToggle right *ngIf="event" (click)="deleteEvent()">
-      <ion-icon name="trash"></ion-icon>
-    </button>
+      <div ion-col style="padding-right: 15px; padding-left: 15px;">
+        <button ion-button right *ngIf="!event" (click)="createEvent()">
+          <ion-icon name="checkmark"></ion-icon>Create
+        </button>
+      </div>
+
+      <div ion-col right>
+        <button ion-button menuToggle right *ngIf="event" (click)="deleteEvent()">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </div>
+    </div>
 
   </ion-toolbar>  
 </ion-header>
@@ -34,7 +44,7 @@
     <ion-textarea placeholder="Event Description" ion-row [(ngModel)]="description" placeholder="Event's description">
     </ion-textarea>
 
-    <button ion-button ion-row style="margin: auto; margin-top: 8px;" (click)="createEvent()">Create Event</button>
+    <button ion-button ion-row style="margin: auto; margin-top: 8px;" (click)="createEvent()"><ion-icon name="checkmark"></ion-icon>Create Event</button>
   </div>
 
 </ion-content>
