@@ -180,10 +180,10 @@ async function postEvent(req, res, next) {
   }
 
   try {
-    let query = `INSERT INTO events (title, description, lat, lng, address, personId, familyKey) VALUES("${event.title}", "${event.description}",   
-      "${event.lat}", "${event.lng}", "${event.address}", "${event.personId}", "${event.familyKey}")`;
+    let query = `INSERT INTO events (title, description, lat, lng, address, personId, familyKey, date) VALUES("${event.title}", "${event.description}",   
+      "${event.lat}", "${event.lng}", "${event.address}", "${event.personId}", "${event.familyKey}", "${event.date}")`;
     await conn.query(query);
-
+    console.log('got here');
     res.status(200).send({success: true, message: 'Added event'});
   }
   catch (error) {

@@ -1,8 +1,20 @@
 const express = require('express');
+const fs = require('fs');//for reading ssl certificate
+const https = require('https');
 if (!process.env.PRODUCTION) {
   require('dotenv-safe').config();//load environment variables
   console.log("localhost");
 }
+
+//create ssl certificate options
+const httpsOptions = {
+  key: fs.readFileSync('../../../myserver.key'),
+  cert: fs.readFileSync('../../../server.crt'),
+  ca: [
+      fs.readFileSync('./comodosha256domainvalidationsecureserverca.crt'),
+      fs.readFileSync('./comodorsaaddtrustca.crt') 
+   ]
+};
 
 //routes
 var loginRoute = require('./routes/login');
@@ -80,6 +92,6 @@ server.use((req, res, next) => {
 });
 
 //********************************* START SERVER ******************************
-server.listen(process.env.PORT, () => {
-  console.log("Listening on port: ", process.env.PORT);
+const httpsServer = https.createServer(httpsOptions, server).listen(process.env.PORT, () => {
+  console.log('server running at ' + process.env.PORT);
 });

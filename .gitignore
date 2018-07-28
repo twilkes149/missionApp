@@ -1,2 +1,9 @@
 server/node_modules/
 server/src/.env
+server/keytmp.pem
+server/cert.pem
+server/key.pem
+self certificate
+server/src/comodorsaaddtrustca.crt
+server/src/comodorsaorganizationvalidationsecureserverca.crt
+server/src/comodosha256domainvalidationsecureserverca.crt
