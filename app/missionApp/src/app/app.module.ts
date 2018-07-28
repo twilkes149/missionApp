@@ -22,6 +22,7 @@ import { HTTP } from '@ionic-native/http';
 import { ApiProvider } from '../providers/api/api';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { DatePicker } from '@ionic-native/date-picker';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
     ApiProvider,
     GoogleMaps,
     SocialSharing,
+    DatePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

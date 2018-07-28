@@ -51,7 +51,12 @@
     <ion-list> <!-- Display all of the person's events -->
       <button ion-item *ngFor="let event of person.events | slice:1" (click)="gotToEvent(event)" class="event-list-item">
         <div *ngIf="event.title != '_START'">
-          {{ event.title }}
+          <div style="float: left;">
+            {{ event.title }}
+          </div>
+          <div style="float: right;">
+            {{ event.date }}
+          </div>
           <br />
           {{ event.description }}
         </div>

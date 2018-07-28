@@ -27,6 +27,7 @@ export class PersonPage {
 
     //get info for person    
     this.person = this.params.get('person');
+    this.cleanDates();
     this.personId = this.person.id;
     
     this.name = this.person.firstName + ' ' + this.person.lastName;
@@ -44,6 +45,8 @@ export class PersonPage {
     this.api.getPerson(this.personId)
     .then((response:any) => {      
       this.person = response.person;
+
+      this.cleanDates();
     })
     .catch((error) => {      
       const message = this.alert.create({
@@ -54,6 +57,15 @@ export class PersonPage {
       message.present();
     });    
     this.gender = (this.person.gender == 'm') ? 'man' : 'woman';
+  }
+
+  //a function to remove all of the unneeded things on dates
+  cleanDates() {
+    for (let event of this.person.events) {
+      if (event.date) {
+        event.date = event.date.replace(/T.*$/g, '');        
+      }
+    }
   }
 
   confirmDelete() {

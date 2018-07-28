@@ -3,6 +3,7 @@ import { NavController, AlertController, NavParams, LoadingController } from 'io
 
 //providers
 import { ApiProvider } from '../../providers/api/api'; 
+import { DatePicker } from '@ionic-native/date-picker';
 
 @Component({
   selector: 'page-event',
@@ -12,8 +13,10 @@ import { ApiProvider } from '../../providers/api/api';
 export class EventPage {  
   public name:string;  
   private event:any;
-  private person:any;
+  private person:any
   
+  public date:any;//used for the date objects
+  public displayDate:string;
   public description:string;
   public title:string;
   public showSubmit:boolean;
@@ -22,18 +25,47 @@ export class EventPage {
     private api: ApiProvider,
     public params: NavParams,
     public alert: AlertController,
+    public datePicker: DatePicker,
     public loading: LoadingController) {
 
     this.event = this.params.get('event');//get event that is passed in
     if (this.event) {
       this.name = this.event.title;
-      this.description = this.event.description;  
+      this.description = this.event.description;
+      this.event.date = this.event.date ? this.event.date : 'Pick date';
+      this.displayDate = this.cleanDate(this.event.date);
     }
     else {
       this.name = "Create Event";
       this.description = '';
       this.person = this.params.get('person');
+      this.date = new Date();
+      this.displayDate = "Pick date";
     }
+  }
+
+  //puts date in correct format
+  cleanDate(date:string) {
+    return date.replace(/T.*$/g,'');
+  }
+
+  pickDate() {
+    this.datePicker.show({
+      date: new Date(this.event ? this.event.date : 0),
+      titleText: 'Pick a date',
+      mode: 'date',
+      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK,
+      minDate: new Date('1830-2-2'),
+    }).then(
+      date => {
+        this.date = date;
+
+        //display date on button
+        this.displayDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+        console.log(this.displayDate);
+      },
+      err => console.log('Error occurred while getting date: ', err)
+    );
   }
 
   goBack() {
@@ -72,6 +104,7 @@ export class EventPage {
 
   updateEvent() {    
     this.event.description = this.description;//update description
+    this.event.date = this.date;
 
     //show loading indicator
     const loader = this.loading.create({
@@ -117,6 +150,7 @@ export class EventPage {
         description: this.description,
         personId: this.person.id,
         familyKey: this.person.familyKey,
+        date: this.date,
       };
 
       this.api.createEvent(event)

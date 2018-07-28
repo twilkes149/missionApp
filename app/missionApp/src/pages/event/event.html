@@ -25,14 +25,22 @@
 
 <ion-content padding class="backgroundColor">
   <!-- View/edit Event -->
+  <div *ngIf="event">
+    <h4 style="float: left; color: white; margin-right: 10px; margin-top: 5px;">Event's date:</h4>
+    <button ion-button outline (click)="pickDate()" style="color: white;">{{displayDate}}</button>
+  </div>
   <div *ngIf="event" center style="height: 50%; margin-top: 5%; margin-top: 5%;">
     <ion-textarea [(ngModel)]="description" (input)="checkInput()" ion-row>      
     </ion-textarea>
 
-    <button ion-button ion-row *ngIf="showSubmit" style="margin: auto; margin-top: 8px;" (click)="updateEvent()">Submit Changes</button>
+    <button ion-button ion-row style="margin: auto; margin-top: 8px;" (click)="updateEvent()">Submit Changes</button>
   </div>
 
   <!-- Create Event -->
+  <div *ngIf="!event">
+    <h4 style="float: left; color: white; margin-right: 10px; margin-top: 5px;">Event's date:</h4>
+    <button ion-button outline (click)="pickDate()" style="color: white;">{{displayDate}}</button>
+  </div>
   <div *ngIf="!event" style="height: 50%; margin-top: 5%; margin-top: 5%;">
     <ion-item ion-row>
       <ion-label color="#000000" stacked>Event Title</ion-label>
