@@ -44,7 +44,7 @@ async function putEvent(req, res, next) {
 
   try {
     //title, desccription, lat, lng, address
-    let tR = null, dR = null, lR = null, lnR = null, aR = null;
+    let tR = null, dR = null, lR = null, lnR = null, aR = null, dateR=null;
     if (event.title) {
       let query = `UPDATE events SET title = "${event.title}" WHERE id = "${event.id}"`;
       tR = conn.query(query);
@@ -65,8 +65,11 @@ async function putEvent(req, res, next) {
       let query = `UPDATE events SET address = "${event.address}" WHERE id = "${event.id}"`;
       aR = conn.query(query);
     }  
-
-    await Promise.all([tR,dR,lR,lnR,aR]);
+    if (event.date) {
+      let query = `UPDATE events SET date = "${event.date}" WHERE id = "${event.id}"`;
+      dateR = conn.query(query);
+    }    
+    await Promise.all([tR,dR,lR,lnR,aR, dateR]);
 
     res.status(200).send({success: true, message: 'Updated event'});
   }
