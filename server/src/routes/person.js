@@ -105,6 +105,16 @@ async function putPerson(req, res, next) {
   conn.end();
 }
 
+//function to return a list of parents (first & last name and id) for a given person (personId)
+async function getParents(id, conn) {
+  let query = 'SELECT id, firstName, lastName FROM person INNER JOIN parents ON parents.personId = "${id}" AND person.id = parents.parentId';
+  let result = await conn.query(query);
+  if (result) {
+    return result;
+  }
+  return null;
+}
+
 //helper function to select a person from the database
 async function selectPerson(id, conn) {
   try {
@@ -127,6 +137,8 @@ async function selectPerson(id, conn) {
       return false;
     }
     person.events = result;
+    person.parents = await this.getParents(id);
+
     return person;
   }
   catch (error) {
@@ -152,6 +164,7 @@ async function selectFamilyKeyPerson(familyKey, conn) {
     persons = await persons.map(async (person) => {
       let personId = person.id;
       person.events = await Events.selectPersonEvents(personId, conn);
+      person.parents = await this.getParents(personId);
       return person;
     });
 

@@ -17,6 +17,9 @@ import { EditPersonPage } from '../pages/editPerson/editPerson';
 import { CreatePersonPage } from '../pages/createPerson/createPerson';
 import { SettingsPage } from '../pages/settings/settings';
 
+//Modals
+import { Modal } from '../components/modal/modal';
+
 //providers
 import { HTTP } from '@ionic-native/http';
 import { ApiProvider } from '../providers/api/api';
@@ -36,6 +39,7 @@ import { DatePicker } from '@ionic-native/date-picker';
     EditPersonPage,
     CreatePersonPage,
     SettingsPage,
+    Modal,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +58,7 @@ import { DatePicker } from '@ionic-native/date-picker';
     EditPersonPage,
     CreatePersonPage,
     SettingsPage,
+    Modal,
   ],
   providers: [
     StatusBar,

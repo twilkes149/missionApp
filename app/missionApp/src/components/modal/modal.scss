@@ -1,0 +1,20 @@
+modal-component {
+  ion-modal {
+    padding: 30px;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .footerButton {
+    font-size: 12px;
+  }
+}
+
+ion-modal {
+  padding: 30px;  
+  background: rgba(0,0,0,0.5);  
+}
+
+.modal-wrapper {
+  border-radius: 5px;
+  border: 2px;  
+}

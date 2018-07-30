@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar class="header" color="header">
+    <ion-title style="color: white">
+      {{modalTitle}}
+    </ion-title>
+    
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>      
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="backgroundColor" padding>
+  <ion-list class="borderRadius"> 
+    
+    <ion-card *ngFor="let input of inputFields" class="borderRadius item item-input" margin-top (click)="select(input.id)" tappable>
+      <ion-card-content [style.border-color]="getColor(input.id)" style="border-style: solid;">
+        <h4>{{input.firstName}} {{input.lastName}}</h4>
+      </ion-card-content>
+    </ion-card>    
+
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="header" color="header">    
+
+    <button *ngIf="deleteFunction" left ion-button small class="borderRadius footerButton" color='danger' style='margin-right: 10px; color: white;' (click)="delete()">
+        <ion-icon name="trash" style="margin-right: 5px"></ion-icon> Delete
+    </button>
+
+    <button right ion-button small *ngIf="!loading" class="borderRadius footerButton" color='secondary' style='color: white; float: right;' (click)="save()">
+        <ion-icon name="create" style="margin-right: 5px"></ion-icon> Save
+    </button>
+
+    <ion-spinner *ngIf="loading" right style='float: right;'></ion-spinner>
+
+    <button right ion-button small class="borderRadius footerButton" color='light' style='margin-right: 2px; color: black; float: right;' (click)="dismiss()">
+        <ion-icon name="close" style="margin-right: 5px"></ion-icon> Cancel
+    </button>
+  </ion-toolbar>
+</ion-footer>
