@@ -137,7 +137,7 @@ async function selectPerson(id, conn) {
       return false;
     }
     person.events = result;
-    person.parents = await this.getParents(id);
+    person.parents = await getParents(id, conn);
 
     return person;
   }
@@ -164,7 +164,7 @@ async function selectFamilyKeyPerson(familyKey, conn) {
     persons = await persons.map(async (person) => {
       let personId = person.id;
       person.events = await Events.selectPersonEvents(personId, conn);
-      person.parents = await this.getParents(personId);
+      person.parents = await getParents(personId, conn);
       return person;
     });
 

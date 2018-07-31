@@ -16,11 +16,15 @@
 <ion-content class="backgroundColor" padding>
   <ion-list class="borderRadius"> 
     
-    <ion-card *ngFor="let input of inputFields" class="borderRadius item item-input" margin-top (click)="select(input.id)" tappable>
-      <ion-card-content [style.border-color]="getColor(input.id)" style="border-style: solid;">
+    <button *ngFor="let input of inputFields" 
+      class="borderRadius item item-input" 
+      (click)="select(input.id)" 
+      style="text-transform: none;"
+      color="light"
+      [outline]="displayList[input.id].outline"
+      margin-top  ion-button block>
         <h4>{{input.firstName}} {{input.lastName}}</h4>
-      </ion-card-content>
-    </ion-card>    
+    </button>    
 
   </ion-list>
 </ion-content>

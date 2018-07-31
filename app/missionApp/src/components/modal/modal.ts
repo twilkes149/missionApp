@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
+import { Component, NgZone } from '@angular/core';
+import { ViewController, NavParams, Events } from 'ionic-angular';
 
 @Component({
   selector: 'modal-component',
@@ -25,21 +25,28 @@ export class Modal {
   public deleteFunction:Function = null;
   public saveFunction:Function = null;
 
-  public color:string = 'white';
-  public selectedColor: string = 'red';
-  public selected;
-
+  public displayList:any = {};
   public loading:boolean = false;
 
   constructor(public view: ViewController,
-    public params: NavParams) {
+    public params: NavParams,
+    public events: Events,
+    public zone: NgZone,
+    ) {
+
+    //force update of screen
+    this.events.subscribe('updateScreen', () => {
+      this.zone.run(() => {
+        console.log('force update the screen');
+      });
+    });
     
     //grabbing modal parameters
     this.modalTitle = this.params.get('modalTitle');
     this.inputFields = this.params.get('inputFields');
     this.deleteFunction = this.params.get('deleteCallback');
     this.saveFunction = this.params.get('saveCallback');
-    this.selected = [];
+
     //setting default parameters
     if (!this.modalTitle) {//default title
       this.modalTitle = 'Edit Modal';
@@ -55,22 +62,30 @@ export class Modal {
         placeholder: 'Your text here',
       }];
     }
+    else {
+      //sort persons by name
+      this.inputFields.sort((a, b) => {
+        return a.firstName.localeCompare(b.firstName);
+      });
+
+      this.inputFields.forEach((field) => {        
+        this.displayList[field.id] = {};
+        this.displayList[field.id].name = `${field.firstName} ${field.lastName}`;
+        this.displayList[field.id].outline = true;
+      });
+
+      console.log('displayList', this.displayList);
+    }
+  }
+
+  updateScreen() {
+    this.events.publish('updateScreen');
   }
 
   select(id) {
-    console.log(id);
-    if (!this.selected.includes(id)) {
-      this.selected.push(id);      
-    }    
-  }
-
-  getColor(id) {
-    if (this.selected.includes(id)) {
-      return 'red';
-    }
-    else {
-      return 'white';
-    }
+    this.displayList[id].outline = !this.displayList[id].outline;
+    this.updateScreen();
+    console.log(id, this.displayList[id].outline);
   }
 
   //save this resource
@@ -101,7 +116,7 @@ export class Modal {
   }
 
   //cancel / close the modal
-  dismiss() {
+  dismiss() {    
     this.view.dismiss();
   }
 }
