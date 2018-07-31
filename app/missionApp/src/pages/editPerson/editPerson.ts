@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, NavParams, ModalController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { NavController, AlertController, NavParams } from 'ionic-angular';
 
 //providers
 import { ApiProvider } from '../../providers/api/api';
-
-//modal
-import { Modal } from '../../components/modal/modal';
 
 import {
   GoogleMaps,
@@ -36,9 +32,7 @@ export class EditPersonPage {
 
   constructor (public navCtrl: NavController,
     private api: ApiProvider,
-    public params: NavParams,
-    public modal: ModalController,
-    public storage: Storage,
+    public params: NavParams,    
     public alert: AlertController) {
 
     this.person = this.params.get('person');
@@ -52,14 +46,6 @@ export class EditPersonPage {
 
   goBack() {
     this.navCtrl.pop();
-  }
-
-  async selectParents() {
-    let familyKey = await this.storage.get('familyKey');
-    let persons = await this.api.getPersons(familyKey);
-
-    let modal = this.modal.create(Modal, {modalTitle: 'Select Parents', inputFields: persons});
-    modal.present();
   }
 
   updatePerson() {

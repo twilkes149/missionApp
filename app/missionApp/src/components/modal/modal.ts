@@ -25,8 +25,10 @@ export class Modal {
   public deleteFunction:Function = null;
   public saveFunction:Function = null;
 
-  public displayList:any = {};
+  public displayList:any = {};//contains list of true or false values for button outlines
+  public selectedList;
   public loading:boolean = false;
+  public currentParents;
 
   constructor(public view: ViewController,
     public params: NavParams,
@@ -40,12 +42,29 @@ export class Modal {
         console.log('force update the screen');
       });
     });
+
+    this.selectedList = new Set();
     
     //grabbing modal parameters
     this.modalTitle = this.params.get('modalTitle');
     this.inputFields = this.params.get('inputFields');
     this.deleteFunction = this.params.get('deleteCallback');
-    this.saveFunction = this.params.get('saveCallback');
+    this.saveFunction = this.params.get('saveCallback');   
+    let parents = this.params.get('currentParents');
+    
+    if (parents) {
+      //map the current parents to ids
+      parents = parents.map(parent => {
+        if (typeof parent == 'number')
+          return parent;
+        else
+          return parent.id;
+      });
+      this.currentParents = new Set(parents);
+    }
+    else {
+      this.currentParents = new Set();
+    }
 
     //setting default parameters
     if (!this.modalTitle) {//default title
@@ -71,10 +90,9 @@ export class Modal {
       this.inputFields.forEach((field) => {        
         this.displayList[field.id] = {};
         this.displayList[field.id].name = `${field.firstName} ${field.lastName}`;
-        this.displayList[field.id].outline = true;
+        this.displayList[field.id].outline = this.currentParents.has(field.id) ? false : true;
       });
-
-      console.log('displayList', this.displayList);
+      this.selectedList = this.currentParents;     
     }
   }
 
@@ -84,7 +102,14 @@ export class Modal {
 
   select(id) {
     this.displayList[id].outline = !this.displayList[id].outline;
-    this.updateScreen();
+    this.updateScreen();//this is required, for some reason ionic doens't recognize that I need a screen refresh
+
+    if (!this.selectedList.has(id)) {
+      this.selectedList.add(id);
+    }
+    else {
+      this.selectedList.delete(id);
+    }
     console.log(id, this.displayList[id].outline);
   }
 
@@ -101,7 +126,7 @@ export class Modal {
 
     if (this.saveFunction) {
       this.loading = true;
-      await this.saveFunction(body);
+      await this.saveFunction(this.selectedList);
       this.loading = false;
       this.view.dismiss();
     }

@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, NavParams } from 'ionic-angular';
+import { NavController, AlertController, NavParams, ModalController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 //pages
 import { EventPage } from '../event/event';
 import { EditPersonPage } from '../editPerson/editPerson';
+
+//modal
+import { Modal } from '../../components/modal/modal';
 
 //providers
 import { ApiProvider } from '../../providers/api/api';
@@ -23,6 +27,8 @@ export class PersonPage {
   constructor(public navCtrl: NavController,     
     public params: NavParams,
     public alert: AlertController,
+    public storage: Storage,
+    public modal: ModalController,
     private api: ApiProvider) { 
 
     //get info for person    
@@ -57,6 +63,21 @@ export class PersonPage {
       message.present();
     });    
     this.gender = (this.person.gender == 'm') ? 'man' : 'woman';
+  }
+
+  //this is the callback function for selecting parents modal
+  saveParents(parents) {
+    console.log(parents);
+  }
+
+  async selectParents() {
+    let familyKey = await this.storage.get('familyKey');
+    let persons = await this.api.getPersons(familyKey);
+
+    let modal = this.modal.create(Modal, {modalTitle: 'Select Parents', 
+      inputFields: persons, saveCallback: this.saveParents.bind(this), 
+      currentParents: this.person.parents});
+    modal.present();
   }
 
   //a function to remove all of the unneeded things on dates
