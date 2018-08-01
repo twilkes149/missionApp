@@ -39,9 +39,18 @@ export class PersonPage {
     this.name = this.person.firstName + ' ' + this.person.lastName;
     this.gender = (this.person.gender == 'm') ? 'man' : 'woman';     
     this.update = false; //we set this to true when we leave the page, so tell us to call api to update the view  
-  }  
+  } 
+
+  sortPersonParents(person) {
+    return person.parents.sort((a, b) => {
+      return a.firstName.localeCompare(b.firstName);
+    });
+  } 
 
   async ionViewWillEnter() {//when we come back from a previous page, load person from api
+    if (this.person && this.person.parents) {
+      this.person.parents = this.sortPersonParents(this.person);
+    }
     if (!this.update) {//only call api when we need to update
       return;
     }
@@ -51,7 +60,7 @@ export class PersonPage {
     this.api.getPerson(this.personId)
     .then((response:any) => {      
       this.person = response.person;
-
+      this.person.parents = this.sortPersonParents(this.person);
       this.cleanDates();
     })
     .catch((error) => {      
@@ -65,9 +74,31 @@ export class PersonPage {
     this.gender = (this.person.gender == 'm') ? 'man' : 'woman';
   }
 
+  async goToPerson(id) {
+    let response:any = await this.api.getPerson(id);
+    console.log('getting person', response);
+    this.navCtrl.push(PersonPage, {person: response.person});//go to person view for parent
+  }
+
   //this is the callback function for selecting parents modal
-  saveParents(parents) {
+  async saveParents(parents) {
     console.log(parents);
+    let body = {
+        id: this.personId,
+        parents: Array.from(parents)      
+    };
+
+    await this.api.updatePerson(body)
+    .catch((error) => {      
+      const message = this.alert.create({
+        title: 'Error',
+        subTitle: error.message,
+        buttons: ['OK']
+      });
+      message.present();
+    });
+    this.update = true;
+    this.ionViewWillEnter();
   }
 
   async selectParents() {

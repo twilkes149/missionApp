@@ -47,7 +47,7 @@ async function deletePerson(req, res, next) {
 async function putPerson(req, res, next) {
   let conn = res.locals.conn;
   let person = req.body.person;
-  console.log("put person");
+  console.log("put person", req.body);
 
   if (!person || !person.id) {
     let error = new Error('Not all required fields were provided');

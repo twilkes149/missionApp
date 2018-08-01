@@ -72,14 +72,17 @@
       <h3 style="margin-bottom: 2px;" ion-col left>Parents</h3>
       
       <button ion-button right style="height: 20px; width: 20px;" (click)="selectParents()">
-        <ion-icon center name="add"></ion-icon>
+        <ion-icon center name="create"></ion-icon>
       </button>
     </div>
     <hr style="height: 2px; color: #000000; width: 100%;">
     
     <ion-scroll scrollY="true" style="height: 200px;" *ngIf="person.parents">
       <ion-list> <!-- Display all of the person's events -->
-        <button ion-item *ngFor="let person of person.parents" class="event-list-item">
+        <button ion-item *ngFor="let person of person.parents" 
+        class="event-list-item"
+        (click)="goToPerson(person.id)"
+        >
           <div>          
             {{ person.firstName }} {{person.lastName}}          
           </div>
