@@ -19,6 +19,13 @@ Here they will be able to create a new family, join an existing family (if they 
 This page will show a google map. There will be markers on the map in the mission where they served. Lines can be draw to connect "ancestors" together. 
 Clicking on a marker will display a small bit of information about the person on the bottom. If they click on that area, they will be taken to the view person page.
 
+### Viewing Family Tree Lines
+In the settings menu will be an option to toggle between view family tree lines. If this is enabled, lines will be drawn on the map from the markers of parents to children. Common descendants will be color coded based on a root person. The root person can change, but by default the root person will be a person who has no parents and has children. There can be multiple root persons, in which case each will be trated as a seperate group. Each child (and their descendants) of a root person will be grouped by color. The root person can be selected in the person page, by clicking "view map as" button.
+
+#### Process:
+1. Get root persons
+Select from tables where 
+
 ## View Person
 Here the user will be able to see all of the information about a person: name, gender, description, and list of events. Clicking on edit will take them to the edit person page. Clicking on add event will take them to the create/edit event page. If they click on an already created event they will be taken to the create/edit event page.
 

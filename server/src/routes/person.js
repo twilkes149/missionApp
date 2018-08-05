@@ -115,6 +115,17 @@ async function getParents(id, conn) {
   return null;
 }
 
+async function getChildren(id, conn) {
+  let query = `SELECT id, firstName, lastName FROM person INNER JOIN parents ON parents.parentId = ${id} AND person.id = parents.personId`;
+  let result = await conn.query(query);
+  if (result) {
+    return result;    
+  }
+  else {
+    return null;
+  }
+}
+
 //helper function to select a person from the database
 async function selectPerson(id, conn) {
   try {
@@ -137,7 +148,8 @@ async function selectPerson(id, conn) {
       return false;
     }
     person.events = result;
-    person.parents = await getParents(id, conn);    
+    person.parents = await getParents(id, conn);
+    person.children = await getChildren(id, conn);  
 
     return person;
   }
@@ -165,6 +177,7 @@ async function selectFamilyKeyPerson(familyKey, conn) {
       let personId = person.id;
       person.events = await Events.selectPersonEvents(personId, conn);
       person.parents = await getParents(personId, conn);
+      person.children = await getChildren(personId, conn);
       return person;
     });
 

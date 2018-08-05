@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 //pages
 import { EventPage } from '../event/event';
 import { EditPersonPage } from '../editPerson/editPerson';
+import { GoogleMapPage } from '../googleMap/googleMap';
 
 //modal
 import { Modal } from '../../components/modal/modal';
@@ -40,6 +41,11 @@ export class PersonPage {
     this.gender = (this.person.gender == 'm') ? 'man' : 'woman';     
     this.update = false; //we set this to true when we leave the page, so tell us to call api to update the view  
   } 
+
+  viewMap() {
+    this.storage.set('rootPerson', this.person);//save this person as the root
+    this.navCtrl.popTo(GoogleMapPage);//go back to google map
+  }
 
   sortPersonParents(person) {
     return person.parents.sort((a, b) => {

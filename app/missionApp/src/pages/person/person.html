@@ -30,10 +30,12 @@
         <td ion-col style="width: 80%;">
           <p right *ngIf="person.events[0].address">{{person.events[0].address}}</p>
           <p right>{{person.description}}</p>
-        </td>
+        </td>        
       </tr>
     </table>
   </div>
+
+  <button ion-button (click)="viewMap()"><ion-icon name="navigate" style="margin-right: 2px;"></ion-icon>View Map As</button>
 
   <div class="spacer" style="width: 100%; height: 5%"></div>
 
@@ -48,7 +50,7 @@
     </div>
     <hr style="height: 2px; color: #000000; width: 100%;">
     
-    <ion-scroll scrollY="true" style="height: 200px;" *ngIf="person.events">
+    <ion-scroll scrollY="true" style="height: 200px;" *ngIf="person.events && person.events.length > 1">
       <ion-list> <!-- Display all of the person's events -->
         <button ion-item *ngFor="let event of person.events | slice:1" (click)="gotToEvent(event)" class="event-list-item">
           <div *ngIf="event.title != '_START'">
@@ -77,7 +79,7 @@
     </div>
     <hr style="height: 2px; color: #000000; width: 100%;">
     
-    <ion-scroll scrollY="true" style="height: 200px;" *ngIf="person.parents">
+    <ion-scroll scrollY="true" style="height: 200px;" *ngIf="person.parents && person.parents[0]">
       <ion-list> <!-- Display all of the person's events -->
         <button ion-item *ngFor="let person of person.parents" 
         class="event-list-item"
