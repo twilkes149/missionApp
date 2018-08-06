@@ -439,5 +439,6 @@ export class ApiProvider {
     await this.storage.remove('email');
     await this.storage.remove('password');
     await this.storage.remove('familyKey');
+    await this.storage.remove('rootPerson');    
   }
 }

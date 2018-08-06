@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 
+import { LoginPage } from '../login/login';
+
 //providers
 import { ApiProvider } from '../../providers/api/api';
 import { Storage } from '@ionic/storage';
@@ -213,9 +215,9 @@ export class SettingsPage {
     this.navCtrl.pop();
   }
 
-  logout() {
-    this.api.logout();
-    this.navCtrl.popToRoot();//go to login screen
+  async logout() {
+    await this.api.logout();
+    this.navCtrl.setRoot(LoginPage);
   }
 
   async ionViewWillLeave() {    
