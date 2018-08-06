@@ -7,3 +7,4 @@ self certificate
 server/src/comodorsaaddtrustca.crt
 server/src/comodorsaorganizationvalidationsecureserverca.crt
 server/src/comodosha256domainvalidationsecureserverca.crt
+server/src/daemon
