@@ -14,6 +14,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 export class SettingsPage {
   public families;
   public currentFamily;
+  public lines:boolean;//used to tell if we want to draw connecting lines or not
 
   constructor(public navCtrl: NavController,     
     public params: NavParams,
@@ -21,7 +22,7 @@ export class SettingsPage {
     private api: ApiProvider,
     private storage: Storage,
     private sharing: SocialSharing,
-    public loading: LoadingController) {
+    public loading: LoadingController) {    
   }
 
   async resetMapView() {
@@ -35,6 +36,7 @@ export class SettingsPage {
       this.currentFamily = familyKey;
     }
     this.getFamilies();
+    this.lines = await this.storage.get('connectingLines');
   }
 
   //calls api to get a list of families this user belongs to
@@ -206,9 +208,10 @@ export class SettingsPage {
     this.navCtrl.popToRoot();//go to login screen
   }
 
-  ionViewWillLeave() {    
+  async ionViewWillLeave() {    
     if (this.currentFamily) {      
-      this.storage.set('familyKey', this.currentFamily);
+      await this.storage.set('familyKey', this.currentFamily);
     }
+    await this.storage.set('connectingLines', this.lines);
   }
 }

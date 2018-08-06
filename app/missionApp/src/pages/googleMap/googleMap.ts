@@ -32,6 +32,7 @@ export class GoogleMapPage {
   public currentPerson;
   private markers;  
   private lines;
+  private drawLines:boolean;
 
   private personMap;
   private rootPersons;
@@ -76,6 +77,7 @@ export class GoogleMapPage {
     //await this.storage.set('familyKey', null);
     let currentFamilyKey = await this.storage.get('familyKey');//grab stored family key, to load persons
     let rootPerson = await this.storage.get('rootPerson');
+    this.drawLines = await this.storage.get('connectingLines');
 
     if (!currentFamilyKey) {//if we haven't stored a family key
       this.familyKeys = null;  
@@ -220,7 +222,7 @@ export class GoogleMapPage {
       }
     });
     console.log('adding marker for ' + person.firstName + ' color: ' + color, typeof color);
-    if (parent) {//draw line from this marker, to parent's marker
+    if (parent && this.drawLines) {//draw line from this marker, to parent's marker
       let parentLoc: ILatLng = {lat: this.personMap[parent.id].events[0].lat, lng: this.personMap[parent.id].events[0].lng};
       let personLoc: ILatLng = {lat: this.personMap[person.id].events[0].lat, lng: this.personMap[person.id].events[0].lng};
 

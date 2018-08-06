@@ -13,18 +13,37 @@
 </ion-header>
 
 <ion-content padding class="backgroundColor"> 
-  <h2>Map</h2>
-  <button ion-button style="margin: auto; margin-top: 8px;" (click)="resetMapView()"><ion-icon name="refresh"></ion-icon> Reset Map View</button>
+  <div>
+    <h2>Map</h2>
+    <button ion-button style="margin: auto; margin-top: 8px;" (click)="resetMapView()"><ion-icon name="refresh"></ion-icon> Reset Map View</button>
 
-  <h2>Family</h2>
-  <button ion-button style="margin: auto; margin-top: 8px;" (click)="createFamily()"><ion-icon name="add-circle"></ion-icon> Create Family</button>
-  <button ion-button style="margin: auto; margin-top: 8px;" (click)="joinFamily()"><ion-icon name="contacts"></ion-icon> Join Family</button>
-  <button ion-button style="margin: auto; margin-top: 8px;" (click)="shareFamily()"><ion-icon name="share"></ion-icon> Share Current Family</button>
-  <h4>View Family</h4>
-  <ion-item>
-    <ion-label>Your Families</ion-label>
-    <ion-select [(ngModel)]="currentFamily">
-      <ion-option *ngFor="let family of families" value={{family.familyKey}}>{{family.name}}</ion-option>
-    </ion-select>
-  </ion-item>
+    <div margin-top>
+      <table style="width: 100%;">
+        <tr>
+          <td>
+            <p style="color: white;">Family Tree Connecting Lines</p>            
+          </td>
+          <td>
+            <ion-toggle [(ngModel)]="lines"></ion-toggle>
+          </td>      
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="spacer" style="width: 100%; height: 20px;"></div>
+  
+  <div>
+    <h2>Family</h2>
+    <button ion-button style="margin: auto; margin-top: 8px;" (click)="createFamily()"><ion-icon name="add-circle"></ion-icon> Create Family</button>
+    <button ion-button style="margin: auto; margin-top: 8px;" (click)="joinFamily()"><ion-icon name="contacts"></ion-icon> Join Family</button>
+    <button ion-button style="margin: auto; margin-top: 8px;" (click)="shareFamily()"><ion-icon name="share"></ion-icon> Share Current Family</button>
+    <h4>View Family</h4>
+    <ion-item>
+      <ion-label>Your Families</ion-label>
+      <ion-select [(ngModel)]="currentFamily">
+        <ion-option *ngFor="let family of families" value={{family.familyKey}}>{{family.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </div>
 </ion-content>
