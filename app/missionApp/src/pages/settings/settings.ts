@@ -24,6 +24,10 @@ export class SettingsPage {
     public loading: LoadingController) {
   }
 
+  async resetMapView() {
+    await this.storage.remove('rootPerson');
+  }
+
   async ionViewWillEnter() {
     let familyKey = await this.storage.get("familyKey");//get current selected family
 
