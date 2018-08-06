@@ -1,6 +1,13 @@
 # Intro
 This app will display family trees for missionaries.
 
+# Internal Storage
+This is a list of things that are storaged in the permanent storage on the phone
+- email
+- password
+- familyKey //the current family group the user is viewing
+- rootPerson // the current person the user is viewing the map as
+
 # Pages
 ## Login
 This is a normal login page

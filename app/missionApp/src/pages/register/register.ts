@@ -66,7 +66,8 @@ export class RegisterPage {
         //console.log("API register result: ", result)
 
         //navigate to appropiate page here
-        this.navCtrl.push(GoogleMapPage);
+        //this.navCtrl.push(GoogleMapPage);
+        this.navCtrl.setRoot(GoogleMapPage);
       })
       .catch((error) => {
         const message = this.alert.create({

@@ -82,7 +82,8 @@ export class LoginPage {
         this.storage.set('password', this.password);
 
         //navigate to the appropiate page here
-        this.navCtrl.push(GoogleMapPage);
+        //this.navCtrl.push(GoogleMapPage);
+        this.navCtrl.setRoot(GoogleMapPage);
       })
       .catch ((error) => {
         const message = this.alert.create({

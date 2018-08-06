@@ -9,10 +9,9 @@ import { Storage } from '@ionic/storage';
   and Angular DI.
 */
 @Injectable()
-export class ApiProvider {  
-  //private baseUrl = 'http://192.168.1.9:8080/';
-  private baseUrl = 'https://192.168.1.6:8080/';
-  //private baseUrl = 'http://68.102.87.94:8080/';
+export class ApiProvider {    
+  //private baseUrl = 'https://192.168.1.6:8080/';  
+  private baseUrl = 'https://68.102.87.94:8080/';
   private geocodeURL = 'https://maps.googleapis.com/maps/api/geocode/json';
   private apiKey = 'AIzaSyD4Fy4u7GOluh_P7fts8v6Cd9_ptlCQ8Os';  
   private authToken;  

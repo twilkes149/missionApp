@@ -44,7 +44,8 @@ export class PersonPage {
 
   viewMap() {
     this.storage.set('rootPerson', this.person);//save this person as the root
-    this.navCtrl.popTo(GoogleMapPage);//go back to google map
+    //this.navCtrl.popTo(GoogleMapPage);//go back to google map
+    this.navCtrl.popToRoot();
   }
 
   sortPersonParents(person) {
