@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, AlertController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 
 //providers
 import { ApiProvider } from '../../providers/api/api';
@@ -22,11 +22,21 @@ export class SettingsPage {
     private api: ApiProvider,
     private storage: Storage,
     private sharing: SocialSharing,
+    public toast: ToastController,
     public loading: LoadingController) {    
   }
 
   async resetMapView() {
     await this.storage.remove('rootPerson');
+    //let user know they reset the view
+      let toast = this.toast.create({
+        message: 'Map View reset',
+        duration: 2000,
+        cssClass: 'borderRadius',
+        position: 'middle'
+      });
+
+      toast.present();
   }
 
   async ionViewWillEnter() {

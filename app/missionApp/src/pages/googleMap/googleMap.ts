@@ -221,7 +221,7 @@ export class GoogleMapPage {
         lng: this.personMap[person.id].events[0].lng
       }
     });
-    console.log('adding marker for ' + person.firstName + ' color: ' + color, typeof color);
+        
     if (parent && this.drawLines) {//draw line from this marker, to parent's marker
       let parentLoc: ILatLng = {lat: this.personMap[parent.id].events[0].lat, lng: this.personMap[parent.id].events[0].lng};
       let personLoc: ILatLng = {lat: this.personMap[person.id].events[0].lat, lng: this.personMap[person.id].events[0].lng};
